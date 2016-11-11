@@ -38,7 +38,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
 #
 # Swap out the URI below with the URI for the database created in part 2
-DATABASEURI = "postgresql://cc4059:u6t7u@<104.196.138.158>/postgres"
+DATABASEURI = "postgresql://cc4059:u6t7u@104.196.175.120/postgres"
 
 
 #
@@ -61,12 +61,11 @@ engine = create_engine(DATABASEURI)
 #     .schema <tablename>   -- print CREATE TABLE statement for table
 # 
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
-#
 #engine.execute("""DROP TABLE IF EXISTS test;""")
 #engine.execute("""CREATE TABLE IF NOT EXISTS test (
 #  id serial,
 #  name text
-#);""")
+#);"""
 #engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 #
 # END SQLITE SETUP CODE
@@ -183,14 +182,35 @@ def index():
 # notice that the functio name is another() rather than index()
 # the functions for each app.route needs to have different names
 #
-@app.route('/another')
-def another():
-  return render_template("anotherfile.html")
+@app.route('/userprofiles')
+def userprofiles():
+cursor = g.conn.execute("SELECT U.user_id FROM GeneralUser AS G, Users AS U WHERE G.user_id = U.user_id")
+  userids = []
+  for result in cursor:
+    userids.append(result['user_id'])  # can also be accessed using result[0]
+  cursor.close()
+  for x in userids
+cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUser AS G, Users AS U WHERE U.user_id = " + x)
+for result in cursor:
+    names.append(result['name'])  # can also be accessed using result[0]
+  cursor.close()
 
 
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
+  return render_template("userprofiles.html", **context)
+
+@app.route('/artists')
+def artists():
+  
+  return render_template("artists.html", **context)
+
+@app.route('/gandm')
+def gandm():
+  
+  return render_template("gandm.html", **context)
+
+# Search for songs
+@app.route('/search', methods=['GET'])
+def search():
   name = request.form['name']
   print name
   cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
@@ -231,4 +251,3 @@ if __name__ == "__main__":
 
 
   run()
-
