@@ -201,6 +201,8 @@ def userprofiles():
       infoperuser.append(result['username'])  # can also be accessed using result[0]
       infoperuser.append(result['dob'])
       infoperuser.append(result['email'])
+      for result2 in cursor2:
+        infoperuser.append(result2['title'])
     #info.append(infoperuser)
     cursor.close()
     cursor2.close()
