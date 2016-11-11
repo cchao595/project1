@@ -194,17 +194,17 @@ def userprofiles():
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
-    cursor = g.conn.execute(text(cmd), name1 = user)
-    cursor2 = g.conn.execute(text(cmd2), name1 = user)
+    cursor2 = g.conn.execute(text(cmd), name1 = user)
+    cursor3 = g.conn.execute(text(cmd2), name1 = user)
   #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
-    for result in cursor:
+    for result in cursor2:
       infoperuser.append(result['username'])  # can also be accessed using result[0]
       infoperuser.append(result['dob'])
       infoperuser.append(result['email'])
-      for result2 in cursor2:
+      for result2 in cursor3:
         infoperuser.append(result2['title'])
     #info.append(infoperuser)
-    cursor.close()
+    cursor3.close()
     cursor2.close()
   context = dict(data = infoperuser)
 
