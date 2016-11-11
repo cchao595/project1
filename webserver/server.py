@@ -195,12 +195,12 @@ def userprofiles():
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cursor = g.conn.execute(text(cmd), name1 = user)
   #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
-  for result in cursor:
-    infoperuser.append(result['username'])  # can also be accessed using result[0]
-    infoperuser.append(result['dob'])
-    infoperuser.append(result['email'])
-    #info.append(infoperuser)
-  cursor.close()
+      for result in cursor:
+        infoperuser.append(result['username'])  # can also be accessed using result[0]
+        infoperuser.append(result['dob'])
+        infoperuser.append(result['email'])
+        #info.append(infoperuser)
+    cursor.close()
   context = dict(data = infoperuser)
 
   return render_template("userprofiles.html", **context)
