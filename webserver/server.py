@@ -133,7 +133,7 @@ def index():
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
+  cursor = g.conn.execute("SELECT a.name FROM Follows AS f, Artists AS a WHERE f.artist_id = a.artist_id GROUP BY f.artist_id, a.name ORDER BY count(*) desc LIMIT 5;")
   names = []
   for result in cursor:
     names.append(result['name'])  # can also be accessed using result[0]
@@ -184,14 +184,14 @@ def index():
 #
 @app.route('/userprofiles')
 def userprofiles():
-cursor = g.conn.execute("SELECT U.user_id FROM GeneralUser AS G, Users AS U WHERE G.user_id = U.user_id")
+  cursor = g.conn.execute("SELECT U.user_id FROM GeneralUsers AS G, Users AS U WHERE G.user_id = U.user_id")
   userids = []
   for result in cursor:
     userids.append(result['user_id'])  # can also be accessed using result[0]
   cursor.close()
   for x in userids
-cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUser AS G, Users AS U WHERE U.user_id = " + x)
-for result in cursor:
+    cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = '25k3G35S'" )
+  for result in cursor:
     names.append(result['name'])  # can also be accessed using result[0]
   cursor.close()
 
