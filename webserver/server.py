@@ -186,10 +186,11 @@ def index():
 def userprofiles():
   cursor = g.conn.execute("SELECT U.user_id FROM GeneralUsers AS G, Users AS U WHERE G.user_id = U.user_id")
   userids = []
+  names = []
   for result in cursor:
     userids.append(result['user_id'])  # can also be accessed using result[0]
   cursor.close()
-  for x in userids
+  for x in userids:
     cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = '25k3G35S'" )
   for result in cursor:
     names.append(result['name'])  # can also be accessed using result[0]
