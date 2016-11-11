@@ -198,7 +198,7 @@ def userprofiles():
     infoperuser.append(result['email'])
     #info.append(infoperuser)
   cursor.close()
-  context = dict(data = info)
+  context = dict(data = infoperuser)
 
   return render_template("userprofiles.html", **context)
 
