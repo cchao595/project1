@@ -206,7 +206,8 @@ def userprofiles():
     #infoperuser.append('email')
     row2 = cursor3.fetchall()
     for item2 in row2:
-      infoperuser.append(item2)
+      for x in item2:
+        infoperuser.append(x)
     #for result2 in cursor3:
     #  infoperuser.append(result2['title'])
     #info.append(infoperuser)
