@@ -191,16 +191,16 @@ def userprofiles():
   for result in cursor:
     userids.append(result['user_id'])  # can also be accessed using result[0]
   cursor.close()
-  #for user in userids:
-  cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
-  cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
-  cursor2 = g.conn.execute(text(cmd), name1 = user)
-  cursor3 = g.conn.execute(text(cmd2), name1 = user)
+  for user in userids:
+    cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
+    cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cursor2 = g.conn.execute(text(cmd), name1 = user)
+    cursor3 = g.conn.execute(text(cmd2), name1 = user)
   #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
-  for result in cursor2:
-    infoperuser.append(result['username'])  # can also be accessed using result[0]
-    infoperuser.append(result['dob'])
-    infoperuser.append(result['email'])
+  #for result in cursor2:
+    infoperuser.append('username')  # can also be accessed using result[0]
+    infoperuser.append('dob')
+    infoperuser.append('email')
     for result2 in cursor3:
       infoperuser.append(result2['title'])
     #info.append(infoperuser)
