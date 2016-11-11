@@ -204,7 +204,7 @@ def userprofiles():
     #infoperuser.append('username')  # can also be accessed using result[0]
     #infoperuser.append('dob')
     #infoperuser.append('email')
-    row2 = cursor3.fetchall()
+    row2 = cursor3.fetchone()
     for item2 in row2:
       infoperuser.append(item2)
     #for result2 in cursor3:
