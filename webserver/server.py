@@ -198,12 +198,13 @@ def userprofiles():
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
   #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
   #for result in cursor2:
-    infoperuser.append(cursor2.fetchone().items())
-    infoperuser.append('username')  # can also be accessed using result[0]
-    infoperuser.append('dob')
-    infoperuser.append('email')
-    for result2 in cursor3:
-      infoperuser.append(result2['title'])
+    infoperuser.append(cursor2.fetchall())
+    #infoperuser.append('username')  # can also be accessed using result[0]
+    #infoperuser.append('dob')
+    #infoperuser.append('email')
+    infoperuser.append(cursor3.fetchall())
+    #for result2 in cursor3:
+    #  infoperuser.append(result2['title'])
     #info.append(infoperuser)
   cursor3.close()
   cursor2.close()
