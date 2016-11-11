@@ -193,7 +193,7 @@ def userprofiles():
   cursor.close()
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
-    cmd2 = "SELECT P.title FROM PublicPlaylists_generates AS P WHERE P.user_id = :name1"
+    cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cursor = g.conn.execute(text(cmd), name1 = user)
     cursor2 = g.conn.execute(text(cmd2), name1 = user)
   #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
