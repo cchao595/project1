@@ -192,7 +192,7 @@ def userprofiles():
     userids.append(result['user_id'])  # can also be accessed using result[0]
   cursor.close()
   for x in userids:
-    cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = " + x)
+    cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = " + str(x))
   for result in cursor:
     infoperuser.append(result['username'])  # can also be accessed using result[0]
     infoperuser.append(result['dob'])
