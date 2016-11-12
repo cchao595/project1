@@ -209,7 +209,7 @@ def userprofiles():
         row3 = cursor4.fetchall()
         for item3 in row3:
           for y in item3:
-            infoperuser.append(item3)
+            infoperuser.append(y)
 
   cursor3.close()
   cursor2.close()
