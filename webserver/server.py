@@ -323,8 +323,11 @@ def search():
   print name
   cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
   g.conn.execute(text(cmd), name1 = name, name2 = name);
-  return redirect('/')
+  return redirect('/results')
 
+@app.route('/results', methods=['GET', 'POST'])
+def results(name):
+  #Search results here
 
 @app.route('/login')
 def login():
