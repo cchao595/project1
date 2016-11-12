@@ -206,8 +206,9 @@ def userprofiles():
       follow = []
       for w in item1:
         follow.append(w)
-      str2 += ', '.join(str(e) for e in follow)
-      infoperuser.append(str2)
+      str2 += ' '.join(str(e) for e in follow) + ', '
+    
+    infoperuser.append(str2)
     cursor.close()
     row2 = cursor3.fetchall()
     infoperuser.append('Playlists')
