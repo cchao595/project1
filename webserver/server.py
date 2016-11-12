@@ -248,7 +248,7 @@ def artists():
       for y in item2:
         albuminfo.append(x)
       str2 = ' '.join(str(e) for e in albuminfo)
-      infoperartist.append(str1)
+      infoperartist.append(str2)
 
   cursor3.close()
   cursor2.close()
