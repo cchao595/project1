@@ -325,9 +325,10 @@ def search():
   g.conn.execute(text(cmd), name1 = name, name2 = name);
   return redirect('/results')
 
-#@app.route('/results', methods=['GET', 'POST'])
-#def results(name):
-  #Search results here
+@app.route('/results', methods=['GET', 'POST'])
+def results(name):
+  #Search results here change this
+  return render_template("gandm.html", **context)
 
 @app.route('/login')
 def login():
