@@ -199,11 +199,11 @@ def userprofiles():
     for item in row:
       infoperuser.append(item)
     row2 = cursor3.fetchall()
+    infoperuser.append(' ')
     infoperuser.append('Playlists')
+    infoperuser.append(' ')
     for item2 in row2:     
       for x in item2:
-        infoperuser.append("x is" + x)
-        infoperuser.append("this is what?!")
         infoperuser.append(x)
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
