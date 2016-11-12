@@ -254,10 +254,10 @@ def artists():
       infoperartist.append(str1)
     row2 = cursor3.fetchall()
     infoperartist.append('Albums')
-    infoperartist.append('Album Name, Year Released, No of Songs, Record Label')
     for item2 in row2:
       albuminfo = []     
       for y in item2:
+        infoperartist.append('Album Name, Year Released, No of Songs, Record Label')
         albuminfo.append(y)
       str2 = ' '.join(str(e) for e in albuminfo)
       cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and b.name = :name3 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
