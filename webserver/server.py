@@ -256,7 +256,7 @@ def artists():
         songs = []
         for z in item3:
           songs.append(z)
-        str3 = ' '.join(str(e) for e in albuminfo)
+        str3 = ' '.join(str(e) for e in songs)
         infoperartist.append(str3)
 
   cursor3.close()
