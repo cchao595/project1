@@ -330,11 +330,6 @@ def results(name):
   #Search results here change this
   return render_template("gandm.html", **context)
 
-@app.route('/login')
-def login():
-    abort(401)
-    this_is_never_executed()
-
 
 if __name__ == "__main__":
   import click
