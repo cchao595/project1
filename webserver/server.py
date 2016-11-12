@@ -231,9 +231,9 @@ def artists():
   cursor.close()
   for artist in artists:
     cmd = "SELECT A.name, A.genre FROM artists AS A WHERE A.artist_id = :name1"
-    cmd2 = "SELECT B.name, B.year, B.no_of_songs, S.studio_name FROM albums as B, affiliated as A, studio as S, produces as P WHERE A.artist_id = :name1 and S.studio_id = P.studio_id and P.album_id = B.album_id"
+    cmd2 = "SELECT B.name, B.year, B.no_of_songs, S.studio_name FROM albums as B, affiliated as A, studio as S, produces as P WHERE A.artist_id = :name2 and S.studio_id = P.studio_id and P.album_id = B.album_id"
     cursor2 = g.conn.execute(text(cmd), name1 = artist)
-    cursor3 = g.conn.execute(text(cmd2), name1 = artist)
+    cursor3 = g.conn.execute(text(cmd2), name2 = artist)
     row = cursor2.fetchall()
     for item in row:
       artistinfo = []
@@ -249,7 +249,7 @@ def artists():
         albuminfo.append(y)
       str2 = ' '.join(str(e) for e in albuminfo)
       cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and b.name = :name2 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
-      cursor4 = g.conn.execute(text(cmd2), name2 = albuminfo[0])
+      cursor4 = g.conn.execute(text(cmd2), name3 = albuminfo[0])
       infoperartist.append(str2)
       row3 = cursor4.fetchall()
       for item3 in row3:
