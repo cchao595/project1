@@ -207,11 +207,11 @@ def userprofiles():
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
         row3 = cursor4.fetchall()
         for item3 in row3:
+          songinfo = []
           for y in item3:
-            songinfo = []
             songinfo.append(y)
-            str1 = '  '.join(str(e) for e in songinfo)
-            infoperuser.append(str1)
+          str1 = '  '.join(str(e) for e in songinfo)
+          infoperuser.append(str1)
 
   cursor3.close()
   cursor2.close()
