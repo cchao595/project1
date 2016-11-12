@@ -223,6 +223,29 @@ def userprofiles():
 
 @app.route('/artists')
 def artists():
+  cursor = g.conn.execute("SELECT A.artist_id FROM artists as A")
+  artists = []
+  infoperartist = []
+  for result in cursor:
+    artists.append(result['artist_id'])  # can also be accessed using result[0]
+  cursor.close()
+  for artist in artists:
+    cmd = "SELECT A.name, A.genre, FROM artists AS A WHERE A.artist_id = :name1"
+    cmd2 = "SELECT B.name FROM albums as B, affiliated as A, studio as S, produces as P WHERE A.user_id = :name1 and S.studio_id = P.studio_id and P.album_id = B.album_id"
+    cursor2 = g.conn.execute(text(cmd), name1 = artist)
+    cursor3 = g.conn.execute(text(cmd2), name1 = artist)
+    row = cursor2.fetchone()
+    for item in row:
+      infoperartist.append(item)
+    row2 = cursor3.fetchall()
+    infoperartist.append('Playlists')
+    for item2 in row2:     
+      for x in item2:
+        infoperartist.append(x)
+
+  cursor3.close()
+  cursor2.close()
+  context = dict(data = infoperartist)
   
   return render_template("artists.html", **context)
 
