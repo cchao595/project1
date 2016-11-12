@@ -260,7 +260,7 @@ def artists():
       for y in item2:
         albuminfo.append(y)
       str2 = ' '.join(str(e) for e in albuminfo)
-      cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and a.artist_id = :name1 and b.name = :name3 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
+      cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and r.artist_id = :name1 and b.name = :name3 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
       cursor4 = g.conn.execute(text(cmd3), name3 = albuminfo[0], name1 = artist)
       infoperartist.append(str2)
       infoperartist.append('Songs in the Album:')
