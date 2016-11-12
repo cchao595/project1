@@ -192,7 +192,7 @@ def userprofiles():
   cursor.close()
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
-    cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     row = cursor2.fetchone()
@@ -202,19 +202,19 @@ def userprofiles():
     infoperuser.append('Playlists')
     for item2 in row2:     
       for x in item2:
-        infoperuser.append("x is" + item2)
+        infoperuser.append("x is" + x)
         infoperuser.append("this is what?!")
-        #infoperuser.append(x)
-        #cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
-        #cursor4 = g.conn.execute(text(cmd3), name3 = x)
-        #row3 = cursor4.fetchall()
-      #for item3 in row3:
-        #songinfo = []
-        #for y in item3:
-          #songinfo.append(y)
-        #str1 = '  '.join(str(e) for e in songinfo)
-        #infoperuser.append(str1)
-        #cursor4.close()
+        infoperuser.append(x)
+        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
+        cursor4 = g.conn.execute(text(cmd3), name3 = x)
+        row3 = cursor4.fetchall()
+      for item3 in row3:
+        songinfo = []
+        for y in item3:
+          songinfo.append(y)
+        str1 = '  '.join(str(e) for e in songinfo)
+        infoperuser.append(str1)
+        cursor4.close()
 
   cursor3.close()
   cursor2.close()
