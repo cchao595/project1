@@ -127,7 +127,7 @@ def index():
   """
 
   # DEBUG: this is debugging code to see what request looks like
-  print request.args
+  #print request.args
 
 
   #
@@ -186,31 +186,24 @@ def index():
 def userprofiles():
   cursor = g.conn.execute("SELECT U.user_id FROM GeneralUsers AS G, Users AS U WHERE G.user_id = U.user_id")
   userids = []
-  #info = []
   infoperuser = []
   for result in cursor:
     userids.append(result['user_id'])  # can also be accessed using result[0]
   cursor.close()
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
-    cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cmd2 = "SELECT DISTINCT P.title, P.date_created FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
-  #cursor = g.conn.execute("SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = G.user_id")
-  #for result in cursor2:
     row = cursor2.fetchone()
     for item in row:
       infoperuser.append(item)
-    #infoperuser.append('username')  # can also be accessed using result[0]
-    #infoperuser.append('dob')
-    #infoperuser.append('email')
     row2 = cursor3.fetchall()
     for item2 in row2:
+      playlists = []
       for x in item2:
         infoperuser.append(x)
-    #for result2 in cursor3:
-    #  infoperuser.append(result2['title'])
-    #info.append(infoperuser)
+        playlists.append(x)
   cursor3.close()
   cursor2.close()
   context = dict(data = infoperuser)
