@@ -193,7 +193,7 @@ def userprofiles():
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
-    cmd3 = "SELECT a.name, FROM Follows AS f, Artists as a WHERE f.user_id = :name1"
+    cmd3 = "SELECT a.name FROM Follows AS f, Artists as a WHERE f.user_id = :name1"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     cursor = g.conn.execute(text(cmd3), name1 = user)
