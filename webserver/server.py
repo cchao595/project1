@@ -243,6 +243,12 @@ def artists():
       infoperartist.append(str1)
     row2 = cursor3.fetchall()
     infoperartist.append('Albums')
+    for item2 in row2:
+      albuminfo = []     
+      for y in item2:
+        albuminfo.append(y)
+      str2 = ' '.join(str(e) for e in albuminfo)
+      infoperartist.append(str2)
 
   cursor3.close()
   cursor2.close()
