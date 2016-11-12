@@ -210,7 +210,7 @@ def userprofiles():
         for item3 in row3:
           songinfo = ''
           for y in item3:
-            songinfo += str(y) + "   "
+            songinfo += y + "   "
           for i in songinfo:
             infoperuser.append(i)
 
