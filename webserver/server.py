@@ -239,7 +239,7 @@ def artists():
       artistinfo = []
       for x in item:
         artistinfo.append(x)
-      str1 = ' '.join(str(e) for e in songinfo)
+      str1 = ' '.join(str(e) for e in artistinfo)
       infoperartist.append(artistinfo)
     row2 = cursor3.fetchall()
     infoperartist.append('Albums')
