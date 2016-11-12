@@ -9,17 +9,18 @@
 
 <body>
   <h1>Welcome to Spotify!</h1>
+  <div>Our top 5 Artists:</div>
   <div>{{data}}</div>
 
-  <div>
+  <ol>
     {% for n in data %}
-    <div>{{n}}</div>
+    <li>{{n}}</li>
     {% endfor %}
-  </div>
+  </ol>
 
 <p><a href="/userprofiles">User Profiles</a></p>
-<p><a href="/userprofiles">Genres and Moods</a></p>
-<p><a href="/userprofiles"></a></p>
+<p><a href="/gandm">Genres and Moods</a></p>
+<p><a href="/artists">Artists</a></p>
 
 <form method="GET" action="/search">
 <p>Search for a song: <input type="text" name="name"> <input type="submit" value="Search"></p>
