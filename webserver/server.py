@@ -231,7 +231,7 @@ def artists():
   cursor.close()
   for artist in artists:
     cmd = "SELECT A.name, A.genre FROM artists AS A WHERE A.artist_id = :name1 GROUP BY A.genre, A.name"
-    cmd2 = "SELECT B.name FROM albums as B, affiliated as A, studio as S, produces as P WHERE A.user_id = :name1 and S.studio_id = P.studio_id and P.album_id = B.album_id"
+    cmd2 = "SELECT B.name FROM albums as B, affiliated as A, studio as S, produces as P WHERE A.artist_id = :name1 and S.studio_id = P.studio_id and P.album_id = B.album_id"
     cursor2 = g.conn.execute(text(cmd), name1 = artist)
     cursor3 = g.conn.execute(text(cmd2), name1 = artist)
     row = cursor2.fetchone()
