@@ -206,10 +206,11 @@ def userprofiles():
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cmd3 = "SELECT DISTINCT a.name FROM Follows AS f, Artists as a WHERE f.user_id = :name1 and a.artist_id = f.artist_id"
-    cmd0 = "SELECT DISTINCT a.album_name, "
+    cmd0 = "SELECT DISTINCT l.library_index, l.library_name From Albums as a, library_adds as l where l.user_id = :name1 and l.album_id = a.album_id"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     cursor = g.conn.execute(text(cmd3), name1 = user)
+    cursor0 = g.conn.execute(text(cmd0), name1 = user)
     row = cursor2.fetchone()
     for item in row:
       infoperuser.append(item)
@@ -222,6 +223,24 @@ def userprofiles():
       str2 += ' '.join(str(e)+ ' ' for e in follow)
     infoperuser.append(str2)
     cursor.close()
+    row0 = cursor0.fetchall()
+    infoperuser.append('Libraries: ')
+    indexes = []
+    for item0 in row0:
+      libraryname = []
+      for x in item0:
+        libraryname.append(x)
+      indexes.append(libraryname[0])
+      str0 = '. '.join(str(e) for e in libraryname)
+      infoperuser.append(str0)
+      for i in indexes:
+        cmdalbums = "SELECT a.name from  Albums as A, library_adds as l where l.user_id = :name1 and a.album_id = l.album_id and l.library_index = :ind"
+        cursora = g.conn.execute(text(cmdalbums), name1 = user, ind = i)
+        for result in cursora:
+          infoperuser.append(result['name'])
+        cursora.close()
+    cursor0.close();
+    
     row2 = cursor3.fetchall()
     infoperuser.append('Playlists: ')
     for item2 in row2:     
@@ -298,7 +317,7 @@ def gandm():
   return render_template("gandm.html", **context)
 
 # Search for songs
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
   name = request.form['name']
   print name
