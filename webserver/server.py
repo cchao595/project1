@@ -140,6 +140,10 @@ def index():
   cursor.close()
 
   cursor = g.conn.execute("SELECT s.title FROM Listens as l, Songs AS s WHERE l.song_id = s.song_id GROUP BY l.song_id, s.title ORDER BY count(*) desc LIMIT 5")
+  songs = []
+  for result in cursor:
+    songs.append(result['name'])  # can also be accessed using result[0]
+  cursor.close()
 
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
@@ -167,7 +171,7 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  context = dict(data = names, data1 = songs)
 
 
   #
