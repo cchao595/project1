@@ -192,7 +192,7 @@ def userprofiles():
   cursor.close()
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
-    cmd2 = "SELECT DISTINCT P.title, P.date_created FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cmd2 = "SELECT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     row = cursor2.fetchone()
@@ -200,11 +200,19 @@ def userprofiles():
       infoperuser.append(item)
     row2 = cursor3.fetchall()
     for item2 in row2:
+      infoperuser.append('Playlists')
       playlists = []
       for x in item2:
-        infoperuser.append(x[0])
-        infoperuser.append('Date created' + x[1])
-        playlists.append(x[0])
+        infoperuser.append(x)
+        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
+        cursor4 = g.conn.execute(text(cmd3), name3 = x)
+        for result in cursor4:
+          songrow = []
+          songrow.append(result['title'])
+          songrow.append(result['name'])
+          songrow.append(result['length'])
+          songrow.append(result['explicit'])
+          infoperuser.append(songrow)
   cursor3.close()
   cursor2.close()
   context = dict(data = infoperuser)
