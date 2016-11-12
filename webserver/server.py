@@ -194,6 +194,7 @@ def userprofiles():
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
     cmd3 = "SELECT DISTINCT a.name FROM Follows AS f, Artists as a WHERE f.user_id = :name1 and a.artist_id = f.artist_id"
+    cmd0 = "SELECT DISTINCT a.album_name, "
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     cursor = g.conn.execute(text(cmd3), name1 = user)
@@ -255,9 +256,9 @@ def artists():
     row2 = cursor3.fetchall()
     infoperartist.append('Albums')
     for item2 in row2:
+      infoperartist.append('Album Name, Year Released, No of Songs, Record Label')
       albuminfo = []     
-      for y in item2:
-        infoperartist.append('Album Name, Year Released, No of Songs, Record Label')
+      for y in item2:     
         albuminfo.append(y)
       str2 = ' '.join(str(e) for e in albuminfo)
       cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and b.name = :name3 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
