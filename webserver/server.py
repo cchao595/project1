@@ -212,6 +212,7 @@ def userprofiles():
             songinfo.append(y)
           str1 = '  '.join(str(e) for e in songinfo)
           infoperuser.append(str1)
+          cursor4.close()
 
   cursor3.close()
   cursor2.close()
