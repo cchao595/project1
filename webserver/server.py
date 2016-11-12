@@ -193,17 +193,25 @@ def userprofiles():
   for user in userids:
     cmd = "SELECT U.username, U.dob, U.email FROM GeneralUsers AS G, Users AS U WHERE U.user_id = :name1"
     cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cmd3 = "SELECT a.name, FROM Follows AS f, Artists as a WHERE f.user_id = :name1"
     cursor2 = g.conn.execute(text(cmd), name1 = user)
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
+    cursor = g.conn.execute(text(cmd3), name1 = user)
     row = cursor2.fetchone()
     for item in row:
       infoperuser.append(item)
+    row1 = cursor.fetchall()
+    for item1 in row1:
+      follow = []
+      for w in item1:
+        follow.append(y)
+      str2 = 'Follows: ' + ', '.join(str(e) for e in follow)
     row2 = cursor3.fetchall()
     infoperuser.append('Playlists')
     for item2 in row2:     
       for x in item2:
         infoperuser.append(x)
-        infoperuser.append('title artist length (s) explicit')
+        infoperuser.append('Title Artist Length(s) Explicit')
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
         row3 = cursor4.fetchall()
@@ -243,6 +251,7 @@ def artists():
       infoperartist.append(str1)
     row2 = cursor3.fetchall()
     infoperartist.append('Albums')
+    infoperartist.append('Album Name, Year Released, No of Songs, Record Label')
     for item2 in row2:
       albuminfo = []     
       for y in item2:
@@ -251,6 +260,8 @@ def artists():
       cmd3 = "SELECT DISTINCT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, contains as c, albums as b, affiliated as r, records as d, produces as p WHERE B.album_id =c.album_id and b.name = :name3 and s.song_id = c.song_id and p.album_id = b.album_id and a.artist_id = r.artist_id and c.song_id = d.song_id and a.artist_id = d.artist_id"
       cursor4 = g.conn.execute(text(cmd3), name3 = albuminfo[0])
       infoperartist.append(str2)
+      infoperartist.append('Songs in the Album:')
+      infoperartist.append('Title Artist Length(s) Explicit')
       row3 = cursor4.fetchall()
       for item3 in row3:
         songs = []
