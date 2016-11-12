@@ -201,8 +201,12 @@ def userprofiles():
     for item in row:
       infoperuser.append(item)
     row1 = cursor.fetchall()
-    #for item1 in row1:
-    str2 = 'Follows: ' + ', '.join(str(e) for e in row1)
+    str2 = 'Follows'
+    for item1 in row1:
+      follow = []
+      for w in item1:
+        follow.append(w)
+      str2 += ', '.join(str(e) for e in row1)
     infoperuser.append(str2)
     cursor.close()
     row2 = cursor3.fetchall()
