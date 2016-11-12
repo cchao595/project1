@@ -208,11 +208,11 @@ def userprofiles():
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
         row3 = cursor4.fetchall()
         for item3 in row3:
-          songinfo = ''
+          songinfo = []
           for y in item3:
-            songinfo += y + "   "
-          for i in songinfo:
-            infoperuser.append(i)
+            songinfo.append(y)
+          songinfo.toString()
+          infoperuser.append(i)
 
   cursor3.close()
   cursor2.close()
