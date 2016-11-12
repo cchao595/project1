@@ -199,9 +199,7 @@ def userprofiles():
     for item in row:
       infoperuser.append(item)
     row2 = cursor3.fetchall()
-    infoperuser.append('    ')
-    infoperuser.append('Playlists')
-    infoperuser.append('    ')
+    infoperuser.append('\n Playlists \n')
     for item2 in row2:     
       for x in item2:
         infoperuser.append(x)
