@@ -208,8 +208,8 @@ def userprofiles():
         row3 = cursor4.fetchall()
         for item3 in row3:
           songinfo = []
-        for y in item3:
-          songinfo.append(y)
+          for y in item3:
+            songinfo.append(y)
         str1 = '  '.join(str(e) for e in songinfo)
         infoperuser.append(str1)
 
