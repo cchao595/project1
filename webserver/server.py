@@ -145,6 +145,12 @@ def index():
     songs.append(result['title'])  # can also be accessed using result[0]
   cursor.close()
 
+  cursor = g.conn.execute("SELECT a.name FROM Albums as a ORDER BY a.year desc LIMIT 5")
+  albums = []
+  for result in cursor:
+    albums.append(result['name'])  # can also be accessed using result[0]
+  cursor.close()
+
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
   # pass data to a template and dynamically generate HTML based on the data
@@ -171,7 +177,7 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names, data1 = songs)
+  context = dict(data = names, data1 = songs, data2 = albums)
 
 
   #
