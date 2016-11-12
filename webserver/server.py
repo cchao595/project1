@@ -208,7 +208,7 @@ def userprofiles():
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
         row3 = cursor4.fetchone()
         for item3 in row3:
-          infoperuser.append(item)
+          infoperuser.append(item3)
 
   cursor3.close()
   cursor2.close()
