@@ -200,7 +200,7 @@ def userprofiles():
     row = cursor2.fetchone()
     for item in row:
       infoperuser.append(item)
-    row1 = cursor.fetchall()
+    row1 = cursor.fetchone()
     for item1 in row1:
       follow = []
       for w in item1:
