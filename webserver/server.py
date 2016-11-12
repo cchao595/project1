@@ -211,8 +211,8 @@ def userprofiles():
           songinfo = []
           for y in item3:
             songinfo.append(y)
-          songinfo.toString()
-          infoperuser.append(i)
+          str1 = '  '.join(str(e) for e in songinfo)
+          infoperuser.append(str1)
 
   cursor3.close()
   cursor2.close()
