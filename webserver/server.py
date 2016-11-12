@@ -204,15 +204,12 @@ def userprofiles():
       playlists = []
       for x in item2:
         infoperuser.append(x)
-      cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
-      cursor4 = g.conn.execute(text(cmd3), name3 = x)
-      for result in cursor4:
-        songrow = []
-        songrow.append(result['title'])
-        songrow.append(result['name'])
-        songrow.append(result['length'])
-        songrow.append(result['explicit'])
-        infoperuser.append(songrow)
+        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = 'Summer Chill' and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id;"
+        cursor4 = g.conn.execute(text(cmd3), name3 = x)
+        row3 = cursor4.fetchone()
+        for item in row:
+          infoperuser.append(item)
+
   cursor3.close()
   cursor2.close()
   context = dict(data = infoperuser)
