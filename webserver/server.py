@@ -202,8 +202,9 @@ def userprofiles():
     for item2 in row2:
       playlists = []
       for x in item2:
-        infoperuser.append(x)
-        playlists.append(x)
+        infoperuser.append(x[0])
+        infoperuser.append('Date created' + x[1])
+        playlists.append(x[0])
   cursor3.close()
   cursor2.close()
   context = dict(data = infoperuser)
