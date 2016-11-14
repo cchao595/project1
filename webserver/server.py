@@ -225,8 +225,8 @@ def userprofiles():
     cursor.close()
     row0 = cursor0.fetchall()
     infoperuser.append('Libraries: ')
-    indexes = []
     for item0 in row0:
+      indexes = []
       libraryname = []
       for x in item0:
         libraryname.append(x)
