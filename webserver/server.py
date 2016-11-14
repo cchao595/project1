@@ -346,9 +346,9 @@ def gandm():
       infoPerGm.append(str1)
     cursor1.close()
     # store the playlist titles that are in the specific genre/mood
-    cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g, WHERE g.gm_id = :name1, g.publicplaylist_id = p.publicplaylist_id"
     # execute query
-    cursor2 = g.conn.execute(text(cmd2), name1 = user)
+    cursor2 = g.conn.execute(text(cmd2), name1 = anId)
     # append pplaylist titles
     row = cursor2.fetchall()
     # print line "Public Playlists:"
@@ -356,13 +356,17 @@ def gandm():
     # print each pplaylist title followed by songs within
     for item in row:     
     # can i just take out this for loop and use item in place of x?  
+      playlistinfo = []
       for x in item:
-        # pplaylist title
-        infoPerGm.append(x)
+        # add description next to title
+        playlistinfo.append(x)
+        str2 = ' - '.join(str(e) for e in playlistinfo)
+        # print title + description
+        infoPerGm.append(str2)
         # schema of how song details will be printed
         infoPerGm.append('Songs: Title Artist Length(s) Explicit')
         # SQL query: title, name, length, explicit of songs in the playlist
-        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, publicplaylists_generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
+        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
         # execute query
         cursor3 = g.conn.execute(text(cmd3), name3 = x)
         #assign to row
@@ -373,9 +377,10 @@ def gandm():
           # this loop allows item3 to be made into an array
           for y in item:
             songinfo.append(y)
-          str1 = ' '.join(str(e) for e in songinfo)
-          infoPerGm.append(str1)
-        cursor3.close()   
+          str3 = ' - '.join(str(e) for e in songinfo)
+          infoPerGm.append(str3)
+        cursor3.close()
+        cursor2.close()
     infoPerGm.append(' ')
 
   context = dict(data = infoPerGm)
