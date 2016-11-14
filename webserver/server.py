@@ -322,7 +322,7 @@ def artists():
 
 @app.route('/gandm')
 def gandm():
-  cursor = g.conn.execute("SELECT g.gm_id FROM genremoods as g")
+  cursor = g.conn.execute("SELECT g.gm_id FROM genresmoods as g")
   # SQL query: Fetch genre/mood ids
   gmIds = []
   infoPerGm = []
