@@ -343,7 +343,7 @@ def gandm():
       for x in item:
         gminfo.append(x)
       str1 = ' - '.join(str(e) for e in gminfo)
-      infoperGm.append(str1)
+      infoPerGm.append(str1)
     cursor1.close()
     # store the playlist titles that are in the specific genre/mood
     cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
