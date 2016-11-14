@@ -356,7 +356,7 @@ def gandm():
     # print each pplaylist title followed by songs within
     for item in row:     
     # can i just take out this for loop and use item in place of x?  
-    for x in item:
+      for x in item:
         # pplaylist title
         infoPerGm.append(x)
         # schema of how song details will be printed
