@@ -332,7 +332,7 @@ def gandm():
   # for each id, get the genre/mood title and description
   for anId in gmIds:
     # SQL query to fetch one tuple consisting of a genre/mood title and description (artist name and genre)
-    cmd1 = "SELECT g.gm_title, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
+    cmd1 = "SELECT g.gm_name, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
     # execute query
     cursor1 = g.conn.execute(text(cmd1), name1 = anId)
     # All pplaylist titles to row
