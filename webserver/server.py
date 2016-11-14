@@ -211,15 +211,22 @@ def userprofiles():
     cursor3 = g.conn.execute(text(cmd2), name1 = user)
     cursor = g.conn.execute(text(cmd3), name1 = user)
     cursor0 = g.conn.execute(text(cmd0), name1 = user)
+    # assign a row of data to "row" (username, dob, email)
     row = cursor2.fetchone()
+    # append each item in "row" (containing username, dob, email) to infoperuser
     for item in row:
       infoperuser.append(item)
+    # place list of distinct artist names into variable row1
     row1 = cursor.fetchall()
+    # start a string that will detail all the artists followed by this userid
     str2 = 'Follows: '
+    # add each artist name to the string; row1 is list of artist names
     for item1 in row1:
       follow = []
+      # this for loop seems unnecessary, there is only 1 object in item1
       for w in item1:
         follow.append(w)
+        
       str2 += ' '.join(str(e)+ ' ' for e in follow)
     infoperuser.append(str2)
     cursor.close()
@@ -250,8 +257,10 @@ def userprofiles():
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit from songs as s, artists as a, personalplaylists_manages as p, records as r where p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
         cursor4 = g.conn.execute(text(cmd3), name3 = x)
         row3 = cursor4.fetchall()
+        # each item3 is a tuple of title, name, song length, explicit
         for item3 in row3:
           songinfo = []
+          # this loop allows item3 to be made into an array
           for y in item3:
             songinfo.append(y)
           str1 = ' '.join(str(e) for e in songinfo)
@@ -313,6 +322,63 @@ def artists():
 
 @app.route('/gandm')
 def gandm():
+  cursor = g.conn.execute("SELECT g.gm_id FROM genremoods as g")
+  # SQL query: Fetch genre/mood ids
+  gmIds = []
+  infoPerGm = []
+  for result in cursor:
+    gmIds.append(result['gm_id'])  # can also be accessed using result[0]
+  cursor.close()
+  # for each id, get the genre/mood title and description
+  for anId in gmIds:
+    # SQL query to fetch one tuple consisting of a genre/mood title and description (artist name and genre)
+    cmd1 = "SELECT g.gm_title, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
+    # execute query
+    cursor1 = g.conn.execute(text(cmd1), name1 = anId)
+    # All pplaylist titles to row
+    row = cursor1.fetchall()
+    # print gm title and description
+    for item in row:
+      gminfo = []
+      for x in item:
+        gminfo.append(x)
+      str1 = ' - '.join(str(e) for e in gminfo)
+      infoperGm.append(str1)
+    cursor1.close()
+    # store the playlist titles that are in the specific genre/mood
+    cmd2 = "SELECT DISTINCT P.title FROM PersonalPlaylists_manages AS P WHERE P.user_id = :name1"
+    # execute query
+    cursor2 = g.conn.execute(text(cmd2), name1 = user)
+    # append pplaylist titles
+    row = cursor2.fetchall()
+    # print line "Public Playlists:"
+    infoPerGm.append('Public Playlists: ')
+    # print each pplaylist title followed by songs within
+    for item in row:     
+    # can i just take out this for loop and use item in place of x?  
+    for x in item:
+        # pplaylist title
+        infoPerGm.append(x)
+        # schema of how song details will be printed
+        infoPerGm.append('Songs: Title Artist Length(s) Explicit')
+        # SQL query: title, name, length, explicit of songs in the playlist
+        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, publicplaylists_generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
+        # execute query
+        cursor3 = g.conn.execute(text(cmd3), name3 = x)
+        #assign to row
+        row = cursor3.fetchall()
+        # each item3 is a tuple of title, name, song length, explicit
+        for item in row:
+          songinfo = []
+          # this loop allows item3 to be made into an array
+          for y in item:
+            songinfo.append(y)
+          str1 = ' '.join(str(e) for e in songinfo)
+          infoPerGm.append(str1)
+        cursor3.close()   
+    infoPerGm.append(' ')
+
+  context = dict(data = infoPerGm)
   
   return render_template("gandm.html", **context)
 
