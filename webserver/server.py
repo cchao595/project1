@@ -329,13 +329,11 @@ def gandm():
   for result in cursor:
     gmIds.append(result['gm_id'])  # can also be accessed using result[0]
   cursor.close()
-  # for each id, get the genre/mood title and description
+  # for each gm_id
   for anId in gmIds:
-    # SQL query to fetch one tuple consisting of a genre/mood title and description (artist name and genre)
+    # get gm name and description
     cmd1 = "SELECT g.gm_name, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
-    # execute query
     cursor1 = g.conn.execute(text(cmd1), name1 = anId)
-    # All pplaylist titles to row
     row = cursor1.fetchall()
     # print gm title and description
     for item in row:
@@ -345,43 +343,36 @@ def gandm():
       str1 = ' - '.join(str(e) for e in gminfo)
       infoPerGm.append(str1)
     cursor1.close()
-    # store the playlist titles that are in the specific genre/mood
+    # get playlist titles and description
     cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g WHERE g.gm_id = :name2 AND g.publicplaylist_id = p.publicplaylist_id"
-    # execute query
     cursor2 = g.conn.execute(text(cmd2), name2 = anId)
-    # append pplaylist titles
     row = cursor2.fetchall()
+    cursor2.close()
     # print line "Public Playlists:"
     infoPerGm.append('Public Playlists: ')
-    # print each pplaylist title followed by songs within
+    # for each public playlist
     for item in row:     
-    # can i just take out this for loop and use item in place of x?  
-      playlistinfo = []
+      playlistinfo = []  
+      # pplaylist title and description
       for x in item:
-        # add description next to title
-        playlistinfo.append(x)
-        str2 = ' - '.join(str(e) for e in playlistinfo)
-        # print title + description
-        infoPerGm.append(str2)
-        # schema of how song details will be printed
-        infoPerGm.append('Songs: Title Artist Length(s) Explicit')
-        # SQL query: title, name, length, explicit of songs in the playlist
-        cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
-        # execute query
-        cursor3 = g.conn.execute(text(cmd3), name3 = x)
-        #assign to row
-        row = cursor3.fetchall()
-        # each item3 is a tuple of title, name, song length, explicit
-        for item in row:
-          songinfo = []
-          # this loop allows item3 to be made into an array
-          for y in item:
-            songinfo.append(y)
-          str3 = ' - '.join(str(e) for e in songinfo)
-          infoPerGm.append(str3)
-        cursor3.close()
-        cursor2.close()
-    infoPerGm.append(' ')
+        playlistinfo = []
+      str2 = ' - '.join(str(e) for e in playlistinfo)
+      infoPerGm.append(str2)
+      infoPerGm.append('Songs: Title - Artist - Length(s) - Explicit')
+      # print pplaylist title and desc. along with headers for song details
+      cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
+      cursor3 = g.conn.execute(text(cmd3), name3 = x)
+      row = cursor3.fetchall()
+      cursor3.close()
+        # each item is a tuple of title, name, song length, explicit
+      for item in row:
+        songinfo = []
+        # this loop allows item3 to be made into an array
+        for y in item:
+          songinfo.append(y)
+        str3 = ' - '.join(str(e) for e in songinfo)
+        infoPerGm.append(str3)
+    infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
 
   context = dict(data = infoPerGm)
   
