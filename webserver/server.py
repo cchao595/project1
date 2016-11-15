@@ -354,7 +354,7 @@ def gandm():
       playlistinfo = []  
       # pplaylist title and description
       for x in item:
-        playlistinfo = []
+        playlistinfo.append(x)
       str2 = ' - '.join(str(e) for e in playlistinfo)
       infoPerGm.append(str2)
       infoPerGm.append('Songs: Title - Artist - Length(s) - Explicit')
