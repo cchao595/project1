@@ -11,7 +11,6 @@ To run locally
 Go to http://localhost:8111 in your browser
 
 
-A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
 """
 
@@ -363,7 +362,7 @@ def gandm():
       for i in playlisttitle:
       # print pplaylist title and desc. along with headers for song details
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
-        cursor3 = g.conn.execute(text(cmd3), name3 = x)
+        cursor3 = g.conn.execute(text(cmd3), name3 = i)
         row = cursor3.fetchall()
         # each item is a tuple of title, name, song length, explicit
         for item in row:
