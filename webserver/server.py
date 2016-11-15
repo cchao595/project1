@@ -346,7 +346,7 @@ def gandm():
       infoPerGm.append(str1)
     cursor1.close()
     # store the playlist titles that are in the specific genre/mood
-    cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g, WHERE g.gm_id = :name2, g.publicplaylist_id = p.publicplaylist_id"
+    cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g WHERE g.gm_id = :name2, g.publicplaylist_id = p.publicplaylist_id"
     # execute query
     cursor2 = g.conn.execute(text(cmd2), name2 = anId)
     # append pplaylist titles
