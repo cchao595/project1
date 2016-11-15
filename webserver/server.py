@@ -370,9 +370,10 @@ def gandm():
           songinfo.append(y)
         str3 = ' - '.join(str(e) for e in songinfo)
         infoPerGm.append(str3)
-    infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-    cursor3.close()
+      cursor3.close()
     cursor2.close()
+    infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
+    
   context = dict(data = infoPerGm)
   
   return render_template("gandm.html", **context)
