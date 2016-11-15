@@ -360,7 +360,7 @@ def gandm():
       str2 = ' - '.join(str(e) for e in playlistinfo)
       infoPerGm.append(str2)
       infoPerGm.append('Songs: Title - Artist - Length(s) - Explicit')
-      for i in indexes:
+      for i in playlisttitle:
       # print pplaylist title and desc. along with headers for song details
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
         cursor3 = g.conn.execute(text(cmd3), name3 = x)
