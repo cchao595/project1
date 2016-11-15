@@ -366,14 +366,14 @@ def gandm():
         cursor3 = g.conn.execute(text(cmd3), name3 = x)
         row = cursor3.fetchall()
         # each item is a tuple of title, name, song length, explicit
-          for item in row:
-            songinfo = []
-            # this loop allows item3 to be made into an array
-            for y in item:
-              songinfo.append(y)
-            str3 = ' - '.join(str(e) for e in songinfo)
-            infoPerGm.append(str3)
-          cursor3.close()
+        for item in row:
+          songinfo = []
+          # this loop allows item3 to be made into an array
+          for y in item:
+            songinfo.append(y)
+          str3 = ' - '.join(str(e) for e in songinfo)
+          infoPerGm.append(str3)
+        cursor3.close()
     cursor2.close()
     infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
     
