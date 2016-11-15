@@ -347,7 +347,6 @@ def gandm():
     cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g WHERE g.gm_id = :name2 AND g.publicplaylist_id = p.publicplaylist_id"
     cursor2 = g.conn.execute(text(cmd2), name2 = anId)
     row = cursor2.fetchall()
-    cursor2.close()
     # print line "Public Playlists:"
     infoPerGm.append('Public Playlists: ')
     # for each public playlist
@@ -363,7 +362,6 @@ def gandm():
       cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
       cursor3 = g.conn.execute(text(cmd3), name3 = x)
       row = cursor3.fetchall()
-      cursor3.close()
         # each item is a tuple of title, name, song length, explicit
       for item in row:
         songinfo = []
@@ -373,7 +371,8 @@ def gandm():
         str3 = ' - '.join(str(e) for e in songinfo)
         infoPerGm.append(str3)
     infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-
+  cursor3.close()
+  cursor2.close()
   context = dict(data = infoPerGm)
   
   return render_template("gandm.html", **context)
