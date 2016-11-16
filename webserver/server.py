@@ -334,7 +334,7 @@ def gandm():
   for anId in gmIds:
     # get gm name and description
     cmd1 = "SELECT g.gm_name, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
-    cursor1 = g.conn.execute(text(GM_DETAILS_BY_gm_id), gm_id = anId)
+    cursor1 = g.conn.execute(text(cmd1), :name1 = anId)
     row = cursor1.fetchall()
     # print gm title and description
     for item in row:
@@ -384,14 +384,42 @@ def gandm():
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
-def add():
-  name = request.form['name']
-  print name
-  cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
-  g.conn.execute(text(cmd), name1 = name, name2 = name);
-  return redirect('/')
-
-# Search for songs
+def songs_given_playlist():
+  pp_id = request.form['publicplaylist_id']
+  playlistinfo = []
+  try:
+    cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.publicplaylist_id = :pp_id"
+    cursor = g.conn.execute(text(cmd), :pp_id = pp_id)
+  except:
+    return redirect('/invalid_action/')
+  
+  row = cursor.fetchall()
+  cursor.close()
+  # print gm title and description
+  for item in row:
+    ndinfo = []
+    for x in item:
+      ppinfo.append(x)
+    str1 = ' - '.join(str(e) for e in ndinfo)
+    playlistinfo.append(str1)
+    playlistinfo.append('Songs: Title - Artist - Length(s) - Explicit')    
+  try:
+    cmd = "SELECT S.title, A.name, S.song_length/1000 as length, S.explicit FROM songs AS S, artists AS A, PublicPlaylists_Generates AS P, records AS R WHERE p.title = :title and P.song_id = S.song_id and P.song_id = R.song_id and A.artist_id = R.artist_id"
+    cursor = g.conn.execute(text(cmd), :title = pp_id)
+  except:
+    return redirect('/invalid_action/')  
+  row = cursor.fetchall()
+    for item in row:
+      songinfo = []
+      for y in item:
+            songinfo.append(y)
+          str3 = ' - '.join(str(e) for e in songinfo)
+          playlistinfo.append(str3)
+        cursor.close()
+        
+  context = dict(data = playlistinfo)
+  return render_template("lookup_playlist.html", **context)
+ 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
   name = request.form['name']
