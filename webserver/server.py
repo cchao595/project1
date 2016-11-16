@@ -278,7 +278,7 @@ def gandm():
 ########## songs ##########
 ###########################
 # userinput: publicplaylist_id ex. 0rk49r
-@app.route('/' methods =['GET', 'POST'])
+@app.route('/', methods =['GET', 'POST'])
 def songs_given_playlist_id():
   pp_name = request.form['title']
   playlistinfo = []
