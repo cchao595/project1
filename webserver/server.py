@@ -382,6 +382,7 @@ def gandm():
   
   return render_template("gandm.html", **context)
 
+######################################## SEARCH METHODS ########################################
 # userinput: publicplaylist_id ex. 0rk49r
 @app.route('/lookup_playlist')
 def songs_given_playlist_id():
@@ -419,7 +420,8 @@ def songs_given_playlist_id():
         
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
- 
+
+######################################## INSERT METHODS ########################################
 @app.route('/insert_new_song', methods=['POST'])
 def insert_new_song():
   song_id = request.form['song_id']
@@ -433,16 +435,29 @@ def insert_new_song():
   except:
     return redirect('/invalid_action/')
 
-@app.route('/insert_new_publicplaylist', methods=['POST'])
+@app.route('/insert_new_personalplaylist', methods=['POST'])
 def insert_new_personalplaylists_manages():
-  email = request.form['email']
   user_id = request.form['user_id']
   title = request.form['title']
   date_created = request.form['date_created']
   song_id = request.form['song_id']
   try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:email), (:user_id), (:title), (:date_created), (:song_id))"
-    g.conn.execute(text(cmd), :email = email, :user_id = user_id, :title = title, :date_created = date_created, :song_id = song_id)
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:user_id), (:title), (:date_created), (:song_id))"
+    g.conn.execute(text(cmd), :user_id = user_id, :title = title, :date_created = date_created, :song_id = song_id)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
+
+@app.route('/insert_new_publicplaylist', methods=['POST'])
+def insert_new_publicplaylists_generates():
+  user_id = request.form['user_id']
+  publicplaylist_id = request.form['publicplaylist_id']
+  title = request.form['title']
+  description = request.form['description']
+  song_id = request.form['song_id']
+  try:
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:user_id), (:publicplaylist_id), (:title), (:description), (:song_id))"
+    g.conn.execute(text(cmd), :user_id = user_id, :publicplaylist_id = publicplaylist_id, :title = title, :description = description, :song_id = song_id)
     return redirect('/')
   except:
     return redirect('/invalid_action/')
@@ -460,6 +475,47 @@ def insert_new_artist():
   except:
     return redirect('/invalid_action/')
      
+@app.route('/insert_new_library', methods=['POST'])
+def insert_library_adds():
+  library_index = request.form['library_index']
+  library_name = request.form['library_name']
+  user_id = request.form['user_id']
+  album_id = request.form['album_id']
+  date_added = request.form['date_added']
+  try:
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:library_index), (:library_name), (:user_id), (:album_id), (:date_added))"
+    g.conn.execute(text(cmd), :library_index = library_index, :library_name = library_name, :user_id = user_id, :album_id = album_id, :date_added = date_added)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
+
+@app.route('/insert_new_artist', methods=['POST'])
+def insert_new_artist():
+  gm_id = request.form['gm_id']
+  gm_name = request.form['gm_name']
+  gm_description = request.form['gm_description']
+  try:
+    cmd = "INSERT INTO songs VALUES (DEFAULT, (:gm_id), (:gm_name), (:gm_description))"
+    g.conn.execute(text(cmd), :gm_id = gm_id, :gm_name = gm_name, :gm_description = gm_description)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')   
+   
+@app.route('/insert_new_studio', methods=['POST'])
+def insert_new_studio():
+  studio_id = request.form['studio_id']
+  name = request.form['name']
+  location = request.form['location']
+  try:
+    cmd = "INSERT INTO songs VALUES (DEFAULT, (:studio_id), (:name), (:location))"
+    g.conn.execute(text(cmd), :studio_id = studio_id, :name = name, :location = location)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')       
+    
+
+    
+######################################## EXAMPLES ########################################
     
 @app.route('/results', methods=['GET', 'POST'])
 def results(name):
