@@ -20,60 +20,13 @@ from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
 from spotify_queries.py import *
 
-
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-
-#
-# The following uses the postgresql test.db -- you can use this for debugging purposes
-# However for the project you will need to connect to your Part 2 database in order to use the
-# data
-#
-# XXX: The URI should be in the format of: 
-#
-#     postgresql://USER:PASSWORD@<IP_OF_POSTGRE_SQL_SERVER>/postgres
-#
-# For example, if you had username ewu2493, password foobar, then the following line would be:
-#
-#     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
-#
-# Swap out the URI below with the URI for the database created in part 2
 DATABASEURI = "postgresql://cc4059:u6t7u@104.196.175.120/postgres"
-
-
-#
-# This line creates a database engine that knows how to connect to the URI above
-#
 engine = create_engine(DATABASEURI)
 
-
-#
-# START SQLITE SETUP CODE
-#
-# after these statements run, you should see a file test.db in your webserver/ directory
-# this is a sqlite database that you can query like psql typing in the shell command line:
-# 
-#     sqlite3 test.db
-#
-# The following sqlite3 commands may be useful:
-# 
-#     .tables               -- will list the tables in the database
-#     .schema <tablename>   -- print CREATE TABLE statement for table
-# 
-# The setup code should be deleted once you switch to using the Part 2 postgresql database
-#engine.execute("""DROP TABLE IF EXISTS test;""")
-#engine.execute("""CREATE TABLE IF NOT EXISTS test (
-#  id serial,
-#  name text
-#);"""
-#engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
-#
-# END SQLITE SETUP CODE
-#
-
-
-
+######################################## WEB REQUESTS ########################################
 @app.before_request
 def before_request():
   """
@@ -101,39 +54,10 @@ def teardown_request(exception):
   except Exception as e:
     pass
 
-
-#
-# @app.route is a decorator around index() that means:
-#   run index() whenever the user tries to access the "/" path using a GET request
-#
-# If you wanted the user to go to e.g., localhost:8111/foobar/ with POST or GET then you could use
-#
-#       @app.route("/foobar/", methods=["POST", "GET"])
-#
-# PROTIP: (the trailing / in the path is important)
-# 
-# see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
-# see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
-#
+######################################## DISPLAY ########################################
+########## FUN QUERIES ##########
 @app.route('/')
 def index():
-  """
-  request is a special object that Flask provides to access web request information:
-
-  request.method:   "GET" or "POST"
-  request.form:     if the browser submitted a form, this contains the data in the form
-  request.args:     dictionary of URL arguments e.g., {a:1, b:2} for http://localhost?a=1&b=2
-
-  See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
-  """
-
-  # DEBUG: this is debugging code to see what request looks like
-  #print request.args
-
-
-  #
-  # example of a database query
-  #
   cursor = g.conn.execute("SELECT a.name FROM Follows AS f, Artists AS a WHERE f.artist_id = a.artist_id GROUP BY f.artist_id, a.name ORDER BY count(*) desc LIMIT 5")
   names = []
   for result in cursor:
@@ -152,49 +76,10 @@ def index():
     albums.append(result['name'])  # can also be accessed using result[0]
   cursor.close()
 
-  #
-  # Flask uses Jinja templates, which is an extension to HTML where you can
-  # pass data to a template and dynamically generate HTML based on the data
-  # (you can think of it as simple PHP)
-  # documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
-  #
-  # You can see an example template in templates/index.html
-  #
-  # context are the variables that are passed to the template.
-  # for example, "data" key in the context variable defined below will be 
-  # accessible as a variable in index.html:
-  #
-  #     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-  #     <div>{{data}}</div>
-  #     
-  #     # creates a <div> tag for each element in data
-  #     # will print: 
-  #     #
-  #     #   <div>grace hopper</div>
-  #     #   <div>alan turing</div>
-  #     #   <div>ada lovelace</div>
-  #     #
-  #     {% for n in data %}
-  #     <div>{{n}}</div>
-  #     {% endfor %}
-  #
   context = dict(data = names, data1 = songs, data2 = albums)
-
-
-  #
-  # render_template looks in the templates/ folder for files.
-  # for example, the below file reads template/index.html
-  #
   return render_template("index.html", **context)
 
-#
-# This is an example of a different path.  You can see it at
-# 
-#     localhost:8111/another
-#
-# notice that the functio name is another() rather than index()
-# the functions for each app.route needs to have different names
-#
+########## userprofiles ##########
 @app.route('/userprofiles')
 def userprofiles():
   cursor = g.conn.execute("SELECT U.user_id FROM GeneralUsers AS G, Users AS U WHERE G.user_id = U.user_id")
@@ -274,6 +159,7 @@ def userprofiles():
 
   return render_template("userprofiles.html", **context)
 
+########## artists ##########
 @app.route('/artists')
 def artists():
   cursor = g.conn.execute("SELECT A.artist_id FROM artists as A")
@@ -321,6 +207,7 @@ def artists():
   
   return render_template("artists.html", **context)
 
+########## genres/moods ##########
 @app.route('/gandm')
 def gandm():
   cursor = g.conn.execute("SELECT g.gm_id FROM genresmoods as g")
@@ -382,7 +269,8 @@ def gandm():
   
   return render_template("gandm.html", **context)
 
-######################################## SEARCH METHODS ########################################
+######################################## SEARCH ########################################
+########## songs ##########
 # userinput: publicplaylist_id ex. 0rk49r
 @app.route('/lookup_playlist')
 def songs_given_playlist_id():
@@ -421,7 +309,8 @@ def songs_given_playlist_id():
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
 
-######################################## INSERT METHODS ########################################
+######################################## INSERT ########################################
+########## song ##########
 @app.route('/insert_new_song', methods=['POST'])
 def insert_new_song():
   song_id = request.form['song_id']
@@ -435,6 +324,7 @@ def insert_new_song():
   except:
     return redirect('/invalid_action/')
 
+########## personal playlist ##########
 @app.route('/insert_new_personalplaylist', methods=['POST'])
 def insert_new_personalplaylists_manages():
   user_id = request.form['user_id']
@@ -448,6 +338,7 @@ def insert_new_personalplaylists_manages():
   except:
     return redirect('/invalid_action/')
 
+########## public playlist ##########
 @app.route('/insert_new_publicplaylist', methods=['POST'])
 def insert_new_publicplaylists_generates():
   user_id = request.form['user_id']
@@ -462,6 +353,7 @@ def insert_new_publicplaylists_generates():
   except:
     return redirect('/invalid_action/')
 
+########## artist ##########
 @app.route('/insert_new_artist', methods=['POST'])
 def insert_new_artist():
   artist_id = request.form['artist_id']
@@ -475,6 +367,7 @@ def insert_new_artist():
   except:
     return redirect('/invalid_action/')
      
+########## library ##########    
 @app.route('/insert_new_library', methods=['POST'])
 def insert_library_adds():
   library_index = request.form['library_index']
@@ -489,6 +382,7 @@ def insert_library_adds():
   except:
     return redirect('/invalid_action/')
 
+########## artist ##########
 @app.route('/insert_new_artist', methods=['POST'])
 def insert_new_artist():
   gm_id = request.form['gm_id']
@@ -500,7 +394,8 @@ def insert_new_artist():
     return redirect('/')
   except:
     return redirect('/invalid_action/')   
-   
+
+########## studio ##########
 @app.route('/insert_new_studio', methods=['POST'])
 def insert_new_studio():
   studio_id = request.form['studio_id']
@@ -513,6 +408,21 @@ def insert_new_studio():
   except:
     return redirect('/invalid_action/')       
     
+######################################## MODIFY ########################################
+########## public playlist ##########
+@app.route('/modify_publicplaylist', methods=['POST'])
+def modify_publicplaylists_generates():
+  publicplaylist_id = request.form['publicplaylist_id']
+  title = request.form['title']
+  description = request.form['description']
+  try:
+    cmd = "UPDATE publicplaylists_generates() SET title = (:title), description = (:description) WHERE publicplaylist_id = (:publicplaylist_id)"
+    g.conn.execute(text(cmd), :"title = title, :description = description, :publicplaylist_id = publicplaylist_id)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
+                  
+                   
 
     
 ######################################## EXAMPLES ########################################
