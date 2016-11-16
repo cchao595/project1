@@ -382,9 +382,8 @@ def gandm():
   
   return render_template("gandm.html", **context)
 
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def songs_given_playlist():
+# userinput: publicplaylist_id ex. 0rk49r
+def songs_given_playlist_id():
   pp_id = request.form['publicplaylist_id']
   playlistinfo = []
   try:
@@ -420,6 +419,19 @@ def songs_given_playlist():
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
  
+    
+    
+    
+# Example of adding new data to the database
+@app.route('/add', methods=['POST'])
+def add():
+  name = request.form['name']
+  print name
+  cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
+  g.conn.execute(text(cmd), name1 = name, name2 = name);
+  return redirect('/')    
+    
+    
 @app.route('/search', methods=['GET', 'POST'])
 def search():
   name = request.form['name']
