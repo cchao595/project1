@@ -278,16 +278,16 @@ def gandm():
 ########## songs ##########
 ###########################
 # userinput: publicplaylist_id ex. 0rk49r
-@app.route('/lookup_playlist')
+@app.route('/' methods =['GET', 'POST'])
 def songs_given_playlist_id():
-  pp_id = request.form['publicplaylist_id']
+  pp_name = request.form['title']
   playlistinfo = []
   try:
-    cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.publicplaylist_id = :pp_id"
-    cursor = g.conn.execute(text(cmd), :pp_id = pp_id)
+    cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.title LIKE :x"
+    cursor = g.conn.execute(text(cmd), :x = '%' + pp_name + '%')
   except:
     return redirect('/invalid_action/')
-  
+
   row = cursor.fetchall()
   cursor.close()
   # print gm title and description
@@ -314,148 +314,6 @@ def songs_given_playlist_id():
         
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
-
-######################################## INSERT ########################################
-########## song ##########
-##########################
-@app.route('/insert_new_song', methods=['POST'])
-def insert_new_song():
-  song_id = request.form['song_id']
-  song_length = request.form['song_length']
-  explicit = request.form['explicit']
-  title = request.form['title']
-  try:
-    cmd = "INSERT INTO songs VALUES (DEFAULT, (:song_id), (:song_length), (:explicit), (:title))"
-    g.conn.execute(text(cmd), :song_id = song_id, :song_length = song_length, :explicit = explicit, :title = title)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-
-#######################################
-########## personal playlist ##########
-#######################################
-@app.route('/insert_new_personalplaylist', methods=['POST'])
-def insert_new_personalplaylists_manages():
-  user_id = request.form['user_id']
-  title = request.form['title']
-  date_created = request.form['date_created']
-  song_id = request.form['song_id']
-  try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:user_id), (:title), (:date_created), (:song_id))"
-    g.conn.execute(text(cmd), :user_id = user_id, :title = title, :date_created = date_created, :song_id = song_id)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-
-#####################################
-########## public playlist ##########
-#####################################
-@app.route('/insert_new_publicplaylist', methods=['POST'])
-def insert_new_publicplaylists_generates():
-  user_id = request.form['user_id']
-  publicplaylist_id = request.form['publicplaylist_id']
-  title = request.form['title']
-  description = request.form['description']
-  song_id = request.form['song_id']
-  try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:user_id), (:publicplaylist_id), (:title), (:description), (:song_id))"
-    g.conn.execute(text(cmd), :user_id = user_id, :publicplaylist_id = publicplaylist_id, :title = title, :description = description, :song_id = song_id)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-
-############################
-########## artist ##########
-############################
-@app.route('/insert_new_artist', methods=['POST'])
-def insert_new_artist():
-  artist_id = request.form['artist_id']
-  genre = request.form['genre']
-  name = request.form['name']
-  
-  try:
-    cmd = "INSERT INTO songs VALUES (DEFAULT, (:artist_id), (:genre), (:name))"
-    g.conn.execute(text(cmd), :artist_id = artist_id, :genre = genre, :name = name)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-
-#############################     
-########## library ##########
-#############################
-@app.route('/insert_new_library', methods=['POST'])
-def insert_library_adds():
-  library_index = request.form['library_index']
-  library_name = request.form['library_name']
-  user_id = request.form['user_id']
-  album_id = request.form['album_id']
-  date_added = request.form['date_added']
-  try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:library_index), (:library_name), (:user_id), (:album_id), (:date_added))"
-    g.conn.execute(text(cmd), :library_index = library_index, :library_name = library_name, :user_id = user_id, :album_id = album_id, :date_added = date_added)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-
-############################
-########## artist ##########
-############################
-@app.route('/insert_new_artist', methods=['POST'])
-def insert_new_artist():
-  gm_id = request.form['gm_id']
-  gm_name = request.form['gm_name']
-  gm_description = request.form['gm_description']
-  try:
-    cmd = "INSERT INTO songs VALUES (DEFAULT, (:gm_id), (:gm_name), (:gm_description))"
-    g.conn.execute(text(cmd), :gm_id = gm_id, :gm_name = gm_name, :gm_description = gm_description)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')   
-
-############################
-########## studio ##########
-############################
-@app.route('/insert_new_studio', methods=['POST'])
-def insert_new_studio():
-  studio_id = request.form['studio_id']
-  name = request.form['name']
-  location = request.form['location']
-  try:
-    cmd = "INSERT INTO songs VALUES (DEFAULT, (:studio_id), (:name), (:location))"
-    g.conn.execute(text(cmd), :studio_id = studio_id, :name = name, :location = location)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')       
-    
-######################################## MODIFY ########################################
-########## public playlist ##########
-#####################################
-@app.route('/modify_publicplaylist', methods=['POST'])
-def modify_publicplaylists_generates():
-  publicplaylist_id = request.form['publicplaylist_id']
-  title = request.form['title']
-  description = request.form['description']
-  try:
-    cmd = "UPDATE publicplaylists_generates() SET title = (:title), description = (:description) WHERE publicplaylist_id = (:publicplaylist_id)"
-    g.conn.execute(text(cmd), :"title = title, :description = description, :publicplaylist_id = publicplaylist_id)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')
-                   
-############################                  
-########## studio ##########
-############################                        
-@app.route('/modify_studio', methods=['POST'])
-def modify_studio():
-  studio_id = request.form['studio_id']
-  name = request.form['name']
-  location = request.form['location']
-  try:
-    cmd = "UPDATE studio() SET name = (:name), location = (:location) WHERE studio_id = (:studio_id)"
-    g.conn.execute(text(cmd), :"name = name, :location = location, :studio_id = studio_id)
-    return redirect('/')
-  except:
-    return redirect('/invalid_action/')                   
                   
 ######################################## EXAMPLES ########################################
     
