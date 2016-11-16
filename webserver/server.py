@@ -304,13 +304,13 @@ def songs_given_playlist_id():
   except:
     return redirect('/invalid_action/')  
   row = cursor.fetchall()
-    for item in row:
-      songinfo = []
-      for y in item:
-            songinfo.append(y)
-          str3 = ' - '.join(str(e) for e in songinfo)
-          playlistinfo.append(str3)
-        cursor.close()
+  for item in row:
+    songinfo = []
+    for y in item:
+      songinfo.append(y)
+    str3 = ' - '.join(str(e) for e in songinfo)
+    playlistinfo.append(str3)
+    cursor.close()
         
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
