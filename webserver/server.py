@@ -55,7 +55,8 @@ def teardown_request(exception):
     pass
 
 ######################################## DISPLAY ########################################
-########## FUN QUERIES ##########
+########## fun queries ##########
+#################################
 @app.route('/')
 def index():
   cursor = g.conn.execute("SELECT a.name FROM Follows AS f, Artists AS a WHERE f.artist_id = a.artist_id GROUP BY f.artist_id, a.name ORDER BY count(*) desc LIMIT 5")
@@ -79,7 +80,9 @@ def index():
   context = dict(data = names, data1 = songs, data2 = albums)
   return render_template("index.html", **context)
 
+##################################
 ########## userprofiles ##########
+##################################
 @app.route('/userprofiles')
 def userprofiles():
   cursor = g.conn.execute("SELECT U.user_id FROM GeneralUsers AS G, Users AS U WHERE G.user_id = U.user_id")
@@ -159,7 +162,9 @@ def userprofiles():
 
   return render_template("userprofiles.html", **context)
 
+#############################
 ########## artists ##########
+#############################
 @app.route('/artists')
 def artists():
   cursor = g.conn.execute("SELECT A.artist_id FROM artists as A")
@@ -207,7 +212,9 @@ def artists():
   
   return render_template("artists.html", **context)
 
+##################################
 ########## genres/moods ##########
+##################################
 @app.route('/gandm')
 def gandm():
   cursor = g.conn.execute("SELECT g.gm_id FROM genresmoods as g")
@@ -271,6 +278,7 @@ def gandm():
 
 ######################################## SEARCH ########################################
 ########## songs ##########
+###########################
 # userinput: publicplaylist_id ex. 0rk49r
 @app.route('/lookup_playlist')
 def songs_given_playlist_id():
@@ -311,6 +319,7 @@ def songs_given_playlist_id():
 
 ######################################## INSERT ########################################
 ########## song ##########
+##########################
 @app.route('/insert_new_song', methods=['POST'])
 def insert_new_song():
   song_id = request.form['song_id']
@@ -324,7 +333,9 @@ def insert_new_song():
   except:
     return redirect('/invalid_action/')
 
+#######################################
 ########## personal playlist ##########
+#######################################
 @app.route('/insert_new_personalplaylist', methods=['POST'])
 def insert_new_personalplaylists_manages():
   user_id = request.form['user_id']
@@ -338,7 +349,9 @@ def insert_new_personalplaylists_manages():
   except:
     return redirect('/invalid_action/')
 
+#####################################
 ########## public playlist ##########
+#####################################
 @app.route('/insert_new_publicplaylist', methods=['POST'])
 def insert_new_publicplaylists_generates():
   user_id = request.form['user_id']
@@ -353,7 +366,9 @@ def insert_new_publicplaylists_generates():
   except:
     return redirect('/invalid_action/')
 
+############################
 ########## artist ##########
+############################
 @app.route('/insert_new_artist', methods=['POST'])
 def insert_new_artist():
   artist_id = request.form['artist_id']
@@ -366,8 +381,10 @@ def insert_new_artist():
     return redirect('/')
   except:
     return redirect('/invalid_action/')
-     
-########## library ##########    
+
+#############################     
+########## library ##########
+#############################
 @app.route('/insert_new_library', methods=['POST'])
 def insert_library_adds():
   library_index = request.form['library_index']
@@ -382,7 +399,9 @@ def insert_library_adds():
   except:
     return redirect('/invalid_action/')
 
+############################
 ########## artist ##########
+############################
 @app.route('/insert_new_artist', methods=['POST'])
 def insert_new_artist():
   gm_id = request.form['gm_id']
@@ -395,7 +414,9 @@ def insert_new_artist():
   except:
     return redirect('/invalid_action/')   
 
+############################
 ########## studio ##########
+############################
 @app.route('/insert_new_studio', methods=['POST'])
 def insert_new_studio():
   studio_id = request.form['studio_id']
@@ -410,6 +431,7 @@ def insert_new_studio():
     
 ######################################## MODIFY ########################################
 ########## public playlist ##########
+#####################################
 @app.route('/modify_publicplaylist', methods=['POST'])
 def modify_publicplaylists_generates():
   publicplaylist_id = request.form['publicplaylist_id']
@@ -421,10 +443,22 @@ def modify_publicplaylists_generates():
     return redirect('/')
   except:
     return redirect('/invalid_action/')
-                  
                    
-
-    
+############################                  
+########## studio ##########
+############################                        
+@app.route('/modify_studio', methods=['POST'])
+def modify_studio():
+  studio_id = request.form['studio_id']
+  name = request.form['name']
+  location = request.form['location']
+  try:
+    cmd = "UPDATE studio() SET name = (:name), location = (:location) WHERE studio_id = (:studio_id)"
+    g.conn.execute(text(cmd), :"name = name, :location = location, :studio_id = studio_id)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')                   
+                  
 ######################################## EXAMPLES ########################################
     
 @app.route('/results', methods=['GET', 'POST'])
