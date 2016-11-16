@@ -18,6 +18,8 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+from spotify_queries.py import *
+
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -332,7 +334,7 @@ def gandm():
   for anId in gmIds:
     # get gm name and description
     cmd1 = "SELECT g.gm_name, g.gm_description FROM genresmoods As g WHERE g.gm_id = :name1"
-    cursor1 = g.conn.execute(text(cmd1), name1 = anId)
+    cursor1 = g.conn.execute(text(GM_DETAILS_BY_gm_id), gm_id = anId)
     row = cursor1.fetchall()
     # print gm title and description
     for item in row:
@@ -344,7 +346,7 @@ def gandm():
     cursor1.close()
     # get playlist titles and description
     cmd2 = "SELECT DISTINCT p.title, p.description FROM publicplaylists_generates AS p, gathers AS g WHERE g.gm_id = :name2 AND g.publicplaylist_id = p.publicplaylist_id"
-    cursor2 = g.conn.execute(text(cmd2), name2 = anId)
+    cursor2 = g.conn.execute(text(PP_DETAILS_BY_gm_id), gm_id = anId)
     row = cursor2.fetchall()
     # print line "Public Playlists:"
     infoPerGm.append('Public Playlists: ')
@@ -362,7 +364,7 @@ def gandm():
       for i in playlisttitle:
       # print pplaylist title and desc. along with headers for song details
         cmd3 = "SELECT s.title, a.name, s.song_length/1000 as length, s.explicit FROM songs AS s, artists AS a, PublicPlaylists_Generates AS p, records AS r WHERE p.title = :name3 and p.song_id = s.song_id and p.song_id = r.song_id and a.artist_id = r.artist_id"
-        cursor3 = g.conn.execute(text(cmd3), name3 = i)
+        cursor3 = g.conn.execute(text(SONG_DETAILS_BY_title), title = i)
         row = cursor3.fetchall()
         # each item is a tuple of title, name, song length, explicit
         for item in row:
