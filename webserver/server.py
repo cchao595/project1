@@ -383,6 +383,7 @@ def gandm():
   return render_template("gandm.html", **context)
 
 # userinput: publicplaylist_id ex. 0rk49r
+@app.route('/lookup_playlist')
 def songs_given_playlist_id():
   pp_id = request.form['publicplaylist_id']
   playlistinfo = []
