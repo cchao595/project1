@@ -420,27 +420,47 @@ def songs_given_playlist_id():
   context = dict(data = playlistinfo)
   return render_template("lookup_playlist.html", **context)
  
-    
-    
-    
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-  name = request.form['name']
-  print name
-  cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
-  g.conn.execute(text(cmd), name1 = name, name2 = name);
-  return redirect('/')    
-    
-    
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-  name = request.form['name']
-  print name
-  cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
-  g.conn.execute(text(cmd), name1 = name, name2 = name);
-  return redirect('/results')
+@app.route('/insert_new_song', methods=['POST'])
+def insert_new_song():
+  song_id = request.form['song_id']
+  song_length = request.form['song_length']
+  explicit = request.form['explicit']
+  title = request.form['title']
+  try:
+    cmd = "INSERT INTO songs VALUES (DEFAULT, (:song_id), (:song_length), (:explicit), (:title))"
+    g.conn.execute(text(cmd), :song_id = song_id, :song_length = song_length, :explicit = explicit, :title = title)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
 
+@app.route('/insert_new_publicplaylist', methods=['POST'])
+def insert_new_personalplaylists_manages():
+  email = request.form['email']
+  user_id = request.form['user_id']
+  title = request.form['title']
+  date_created = request.form['date_created']
+  song_id = request.form['song_id']
+  try:
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:email), (:user_id), (:title), (:date_created), (:song_id))"
+    g.conn.execute(text(cmd), :email = email, :user_id = user_id, :title = title, :date_created = date_created, :song_id = song_id)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
+
+@app.route('/insert_new_artist', methods=['POST'])
+def insert_new_artist():
+  artist_id = request.form['artist_id']
+  genre = request.form['genre']
+  name = request.form['name']
+  
+  try:
+    cmd = "INSERT INTO songs VALUES (DEFAULT, (:artist_id), (:genre), (:name))"
+    g.conn.execute(text(cmd), :artist_id = artist_id, :genre = genre, :name = name)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
+     
+    
 @app.route('/results', methods=['GET', 'POST'])
 def results(name):
   #Search results here change this
