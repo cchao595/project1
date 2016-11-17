@@ -320,7 +320,7 @@ def songs_given_playlist_id():
 ######################################## INSERT ########################################
 ########## user ##########
 ##########################
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/demo', methods=['GET', 'POST'])
 def add_user():
   pkey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
   cmd = "select user_id from GeneralUsers where user_id == pkey"
@@ -335,7 +335,7 @@ def add_user():
   birthday = request.form['date']
   email = request.form['email']
   if (username == '' or fullname == ''or birthday == null or email == ''):
-    return render_template("/")
+    return render_template("demo.html")
   else:
     cmd2 = "insert into GeneralUsers (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
     cursor = g.conn.execute(text(cmd2), w = pkey, x = username, y = birthday, z = email)
