@@ -339,6 +339,9 @@ def add_user():
       context = dict(data = newinfo)
       return render_template("demo.html", **context)
     else:
+      print(username)
+      print(birthday)
+      print(email)
       newinfo.append("Welcome, " + username + "!")
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:name1, :name2, :name3, :name4, TRUE, FALSE)"
       cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
