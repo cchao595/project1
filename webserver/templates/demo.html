@@ -17,6 +17,12 @@
 <p>Birthday:</p><span class="req">*</span> <input type="date" name="date">
 <p>Email:</p><span class="req">*</span> <input type="text" name="email"> <input type="submit" value="Add">
 </form>
+    
+    <div>
+    {% for n in data %}
+    <div>{{n}}</div>
+    {% endfor %}
+  </div>
 </body>
 
 
