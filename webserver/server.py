@@ -324,7 +324,7 @@ def songs_given_playlist_id():
 ######################################## INSERT ########################################
 ########## user ##########
 ##########################
-@app.route('/nothing', methods=['GET', 'POST'])
+@app.route('/demo', methods=['GET', 'POST'])
 def add_user():
   if request.method == 'POST':
     newinfo = []
@@ -360,7 +360,7 @@ def add_user():
 #############################     
 ########## library ##########
 #############################
-@app.route('/demo', methods=['GET', 'POST'])
+@app.route('/nothing', methods=['GET', 'POST'])
 def insert_library_adds():
   if request.method == 'POST':
     library_index = request.form['library_index']
