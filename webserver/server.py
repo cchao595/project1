@@ -16,6 +16,7 @@ Read about it online.
 
 import os
 import random
+import string
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
