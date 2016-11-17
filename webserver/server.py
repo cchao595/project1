@@ -277,12 +277,12 @@ def gandm():
 ########## songs ##########
 ###########################
 # userinput: publicplaylist_id ex. 0rk49r
-@app.route('/', methods =['POST'])
+@app.route('/', methods =['GET', 'POST'])
 def songs_given_playlist_id():
   pp_name = request.form['title']
   return redirect(url_for('search_results', query=pp_name))
 
-@app.route('/search_results?<query>')
+@app.route('/search_results?<query>', methods = ['GET', 'POST'])
 def playlistsearch_results(query):
   playlistinfo = []
   cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.title LIKE :x"
