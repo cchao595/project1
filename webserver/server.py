@@ -374,6 +374,8 @@ def insert_library_adds():
     return render_template("demo.html")
     #except:
       #return redirect('/invalid_action/')
+  else:
+    return render_template("demo.html")
 
                   
 ######################################## EXAMPLES ########################################
