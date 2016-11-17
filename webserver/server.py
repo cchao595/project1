@@ -316,6 +316,31 @@ def songs_given_playlist_id():
     return render_template("search_results.html", **context)
   else:
     return render_template("/")
+
+######################################## INSERT ########################################
+########## user ##########
+##########################
+@app.route('/adduser', methods=['GET', 'POST'])
+def add_user(name):
+  pkey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+  cmd = "select user_id from GeneralUsers where user_id == pkey"
+  cursor = g.conn.execute(text(cmd))
+  name = []
+  for result in cursor:
+    name.append(result['user_id'])
+  cursor.close()
+  while pkey == name:
+    pkey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+  username = request.form['name1']
+  birthday = request.form['date']
+  email = request.form['email']
+  if (username == '' || fullname == ''|| birthday == null || email == ''):
+    return render_template("/")
+  else:
+    cmd2 = "insert into GeneralUsers (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
+    cursor = g.conn.execute(text(cmd2), w = pkey, x = username, y = birthday, z = email)
+    return render_template("demo.html")
+
                   
 ######################################## EXAMPLES ########################################
     
