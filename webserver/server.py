@@ -288,6 +288,7 @@ def songs_given_playlist_id():
 def playlistsearch_results(query):
   playlistinfo = []
   cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.title LIKE :x"
+  cursor = g.conn.execute(text(cmd), title = pp_name) 
   row = cursor.fetchall()
   for item in row:
     ndinfo = []
@@ -297,7 +298,7 @@ def playlistsearch_results(query):
     playlistinfo.append(str1)
     playlistinfo.append('Songs: Title - Artist - Length(s) - Explicit')    
     cmd2 = "SELECT S.title, A.name, S.song_length/1000 as length, S.explicit FROM songs AS S, artists AS A, PublicPlaylists_Generates AS P, records AS R WHERE p.title = :title and P.song_id = S.song_id and P.song_id = R.song_id and A.artist_id = R.artist_id"
-    cursor2 = g.conn.execute(text(cmd), title = pp_name) 
+    cursor2 = g.conn.execute(text(cmd2), title = query) 
     row = cursor2.fetchall()
     for item in row:
       songinfo = []
