@@ -310,6 +310,8 @@ def songs_given_playlist_id():
           playlistinfo.append(str3)
         cursor2.close()
     cursor.close()
+    if playlistinfo.size() == 0:
+        playlist.append('Oops, nothing found!')
     context = dict(data = playlistinfo)
     return render_template("search_results.html", **context)
   else:
