@@ -8,14 +8,15 @@
 
   <body>
   <h1>Welcome!</h1>
-  <div>Try creating a library.</div>
-
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
-    {% endfor %}
-  </div>
-
+  
+<h2>Demo</h2>
+<div>Create an account and start making libraries</div>
+<form method="POST" action="/adduser">
+<p>Username:</p><span class="req">*</span> <input type="text" name="name1">
+<p>Full name (first and last):</p><span class="req">*</span> <input type="text" name="name2">
+<p>Birthday:</p><span class="req">*</span> <input type="date" name="date">
+<p>Email:</p><span class="req">*</span> <input type="text" name="email"> <input type="submit" value="Add">
+</form>
 </body>
 
 
