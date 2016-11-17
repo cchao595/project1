@@ -334,7 +334,7 @@ def add_user(name):
   username = request.form['name1']
   birthday = request.form['date']
   email = request.form['email']
-  if (username == '' || fullname == ''|| birthday == null || email == ''):
+  if (username == '' OR fullname == ''OR birthday == null OR email == ''):
     return render_template("/")
   else:
     cmd2 = "insert into GeneralUsers (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
