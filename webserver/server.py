@@ -277,7 +277,8 @@ def gandm():
 
   return render_template("gandm.html", **context)
 
-######################################## SEARCH ########################################
+######################################## 
+########################################
 ########## songs ##########
 ###########################
 # userinput: publicplaylist_id ex. 0rk49r
@@ -339,11 +340,11 @@ def add_user():
       return render_template("demo.html", **context)
     else:
       newinfo.append("Welcome, " + username + "!")
-      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :n, :b, :e, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), w = pkeystr, n = username, b = birthday, e = email)
+      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:name1, :name2, :name3, :name4, TRUE, FALSE)"
+      cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
       cursor.close()
-      cmd3 = "insert into GeneralUsers values :w"
-      cursor = g.conn.execute(text(cmd2), w = pkeystr)
+      cmd3 = "insert into GeneralUsers values :key"
+      cursor = g.conn.execute(text(cmd2), key = pkeystr)
       cursor.close()
       context = dict(data = newinfo)
       return render_template("demo.html", **context)
