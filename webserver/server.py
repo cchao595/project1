@@ -326,7 +326,9 @@ def songs_given_playlist_id():
 def add_user():
   if request.method == 'POST':
     pkey = ''.join(random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') for _ in range(8))
-    pkeystr = str(pkey)
+    pkeystr = ""
+    for x in pkey:
+        pkeystr += str(x)
     cmd = "select user_id from Users where user_id == :key"
     cursor = g.conn.execute(text(cmd), key = text(pkeystr))
     name = []
@@ -335,7 +337,8 @@ def add_user():
     cursor.close()
     while pkeystr == name:
       pkey = ''.join(random.choice(string.letters + string.digits) for _ in range(8))
-      pkeystr = str(pkey)
+      for x in pkey:
+        pkeystr += str(x)
     username = request.form['name1']
     birthday = request.form['date']
     email = request.form['email']
