@@ -45,6 +45,15 @@
 <p>Search for a playlist by title: <input type="text" name="title" value = "{{ request.form.search}}"> <input type="submit" value="Search"></p>
 </form>
 
+<h2>Demo</h2>
+<div>Create an account and start making libraries</div>
+<form method="POST" action="/add">
+<p>Username: <input type="text" name="name1"></p><span class="req">*</span>
+<p>Full name (first and last): <input type="text" name="name2"></p><span class="req">*</span>
+<p>Birthday: <input type="date" name="date"></p><span class="req">*</span>
+<p>Email: <input type="text" name="email"> <input type="submit" value="Add"></p><span class="req">*</span>
+</form>
+  
 </body>
 
 
