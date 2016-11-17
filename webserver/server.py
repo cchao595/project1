@@ -364,14 +364,16 @@ def add_user():
 def insert_library_adds():
   if request.method == 'POST':
     library_index = request.form['library_index']
-    library_name = request.form['library_name']
     user_id = request.form['user_id']
     album_id = request.form['album_id']
     date_added = request.form['date_added']
     #try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, :l_index, :library_name, :user_id, :album_id, :date_added)"
-    g.conn.execute(text(cmd), l_index = library_index, l_name = library_name, u_id = user_id, a_id = album_id, d_added = date_added)
-    return render_template("demo.html")
+    cmd = "INSERT INTO library_adds VALUES (DEFAULT, :l_index, :user_id, :album_id, :date_added)"
+    g.conn.execute(text(cmd), l_index = library_index, u_id = user_id, a_id = album_id, d_added = date_added)
+    info = []
+    info.append("success")
+    context = dict(data = info)
+    return render_template("demo.html", **context)
     #except:
       #return redirect('/invalid_action/')
   else:
