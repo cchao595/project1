@@ -343,8 +343,8 @@ def add_user():
       print(birthday)
       print(email)
       newinfo.append("Welcome, " + username + "!")
-      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:name1, :name2, :name3, :name4, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
+      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (%s, %s, %s, %s, TRUE, FALSE)"
+      cursor = g.conn.execute(text(cmd2), pkeystr, username, birthday, email)
       cursor.close()
       cmd3 = "insert into GeneralUsers values :key"
       cursor = g.conn.execute(text(cmd2), key = pkeystr)
