@@ -164,6 +164,8 @@ def userprofiles():
 #############################
 ########## artists ##########
 #############################
+@app.route('/artists')
+def artists():
   cursor = g.conn.execute("SELECT A.artist_id FROM artists as A")
   artists = []
   infoperartist = []
@@ -271,7 +273,7 @@ def gandm():
     
   context = dict(data = infoPerGm)
   
-  return render_template("gandm.html", **context)
+  return render_template('search_results.html', query=query, **context)
 
 ######################################## SEARCH ########################################
 ########## songs ##########
