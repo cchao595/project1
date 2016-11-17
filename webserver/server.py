@@ -373,7 +373,7 @@ def insert_library_adds():
     info = []
     info.append("success")
     context = dict(data = info)
-    return redirect("/")
+    return render_template("anotherfile.html")
     #except:
       #return redirect('/invalid_action/')
   else:
