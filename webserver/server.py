@@ -339,8 +339,8 @@ def add_user():
       return render_template("demo.html", **context)
     else:
       newinfo.append("Welcome, " + username + "!")
-      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :n, :y, :e, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), w = pkeystr, n = username, y = birthday, e = email)
+      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :n, :b, :e, TRUE, FALSE)"
+      cursor = g.conn.execute(text(cmd2), w = pkeystr, n = username, b = birthday, e = email)
       cursor.close()
       cmd3 = "insert into GeneralUsers values :w"
       cursor = g.conn.execute(text(cmd2), w = pkeystr)
