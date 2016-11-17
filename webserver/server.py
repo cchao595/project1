@@ -360,19 +360,20 @@ def add_user():
 #############################     
 ########## library ##########
 #############################
-@app.route('/demo', methods=['POST'])
+@app.route('/demo', methods=['GET', 'POST'])
 def insert_library_adds():
-  library_index = request.form['library_index']
-  library_name = request.form['library_name']
-  user_id = request.form['user_id']
-  album_id = request.form['album_id']
-  date_added = request.form['date_added']
-  try:
+  if request.method == 'POST':
+    library_index = request.form['library_index']
+    library_name = request.form['library_name']
+    user_id = request.form['user_id']
+    album_id = request.form['album_id']
+    date_added = request.form['date_added']
+    #try:
     cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, :l_index, :library_name, :user_id, :album_id, :date_added)"
     g.conn.execute(text(cmd), l_index = library_index, l_name = library_name, u_id = user_id, a_id = album_id, d_added = date_added)
     return render_template("demo.html")
-  except:
-    return redirect('/invalid_action/')
+    #except:
+      #return redirect('/invalid_action/')
 
                   
 ######################################## EXAMPLES ########################################
