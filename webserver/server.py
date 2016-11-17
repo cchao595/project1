@@ -306,6 +306,7 @@ def songs_given_playlist_id():
       cursor2.close()
     cursor.close()
     context = dict(data = playlistinfo)
+    print('hello')
     return render_template("search_results.html", **context)
   else:
     return render_template("/")
