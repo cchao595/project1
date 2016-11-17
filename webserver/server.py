@@ -323,7 +323,7 @@ def songs_given_playlist_id():
 ######################################## INSERT ########################################
 ########## user ##########
 ##########################
-@app.route('/demo', methods=['GET', 'POST'])
+@app.route('/nothing', methods=['GET', 'POST'])
 def add_user():
   if request.method == 'POST':
     newinfo = []
@@ -357,19 +357,20 @@ def add_user():
   else:
     return render_template("demo.html")
 
-#######################################
-########## personal playlist ##########
-#######################################
-@app.route('/insert_new_personalplaylist', methods=['POST'])
-def insert_new_personalplaylists_manages():
+#############################     
+########## library ##########
+#############################
+@app.route('/demo', methods=['POST'])
+def insert_library_adds():
+  library_index = request.form['library_index']
+  library_name = request.form['library_name']
   user_id = request.form['user_id']
-  title = request.form['title']
-  date_created = request.form['date_created']
-  song_id = request.form['song_id']
+  album_id = request.form['album_id']
+  date_added = request.form['date_added']
   try:
-    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:u_id), (:title_p), (:date), (:s_id))"
-    g.conn.execute(text(cmd), u_id = user_id, title_p = title, date = date_created, s_id = song_id)
-    return redirect('/')
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, :l_index, :library_name, :user_id, :album_id, :date_added)"
+    g.conn.execute(text(cmd), l_index = library_index, l_name = library_name, u_id = user_id, a_id = album_id, d_added = date_added)
+    return render_template("demo.html")
   except:
     return redirect('/invalid_action/')
 
