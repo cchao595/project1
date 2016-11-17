@@ -16,8 +16,6 @@ Read about it online.
 
 import os
 import random
-import string
-import datetime
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
@@ -340,39 +338,17 @@ def add_user():
       context = dict(data = newinfo)
       return render_template("demo.html", **context)
     else:
-      #newinfo.append("Welcome, " + username + "!")
+      newinfo.append("Welcome, " + username + "!")
       #try:
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:key, :user, :name3, :em, TRUE, FALSE)"
       g.conn.execute(text(cmd2), key = pkeystr, user = username, name3 = birthday, em = email)
       cmd3 = "insert into GeneralUsers values (:key)"
       g.conn.execute(text(cmd3), key = pkeystr)
+      newinfo.append("Your ID is: " + pkeystr)
       context = dict(data = newinfo)
-      return redirect('/')
+      return render_template("demo.html", **context)
       #except:
         #return redirect('/invalid_action/')
-  else:
-    return render_template("demo.html")
-
-#############################     
-########## library ##########
-#############################
-@app.route('/nothing', methods=['GET', 'POST'])
-def insert_library_adds():
-  if request.method == 'POST':
-    library_index = request.form['library_index']
-    user_id = request.form['user_id']
-    album_id = request.form['album_id']
-    date_added = request.form['date_added']
-    #try:
-    cmd = "INSERT INTO library_adds (library_index, user_id, album_id, date_added) VALUES (:l_index, :user_id, :album_id, :date_added)"
-    g.conn.execute(text(cmd), l_index = library_index, u_id = user_id, a_id = album_id, d_added = datetime.datetime.today())
-    info = []
-    info.append("success")
-    context = dict(data = info)
-    
-    return redirect("anotherfile.html")
-    #except:
-      #return redirect('/invalid_action/')
   else:
     return render_template("demo.html")
 
