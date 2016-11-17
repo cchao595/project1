@@ -326,14 +326,16 @@ def songs_given_playlist_id():
 def add_user():
   if request.method == 'POST':
     pkey = ''.join(random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') for _ in range(8))
+    pkeystr = str(pkey)
     cmd = "select user_id from Users where user_id == :key"
-    cursor = g.conn.execute(text(cmd), key = text(pkey))
+    cursor = g.conn.execute(text(cmd), key = text(pkeystr))
     name = []
     for result in cursor:
       name.append(result['user_id'])
     cursor.close()
-    while pkey == name:
+    while pkeystr == name:
       pkey = ''.join(random.choice(string.letters + string.digits) for _ in range(8))
+      pkeystr = str(pkey)
     username = request.form['name1']
     birthday = request.form['date']
     email = request.form['email']
@@ -341,10 +343,10 @@ def add_user():
       return render_template("demo.html")
     else:
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), w = text(pkey), x = username, y = birthday, z = email)
+      cursor = g.conn.execute(text(cmd2), w = text(pkeystr), x = username, y = birthday, z = email)
       cursor.close()
       cmd3 = "insert into GeneralUsers values :w"
-      cursor = g.conn.execute(text(cmd2), w = text(pkey))
+      cursor = g.conn.execute(text(cmd2), w = text(pkeystr))
       cursor.close()
       return render_template("demo.html")
   else:
