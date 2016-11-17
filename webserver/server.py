@@ -272,8 +272,8 @@ def gandm():
     infoPerGm.append(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
     
   context = dict(data = infoPerGm)
-  
-  return render_template('search_results.html', query=query, **context)
+
+  return render_template("gandm.html", **context)
 
 ######################################## SEARCH ########################################
 ########## songs ##########
@@ -309,7 +309,7 @@ def playlistsearch_results(query):
   cursor1.close()
         
   context = dict(data = playlistinfo)
-  return render_template("lookup_playlist.html", **context)
+  return render_template('search_results.html', query=query, **context)
                   
 ######################################## EXAMPLES ########################################
     
