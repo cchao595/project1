@@ -325,8 +325,8 @@ def songs_given_playlist_id():
 @app.route('/demo', methods=['GET', 'POST'])
 def add_user():
   pkey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
-  cmd = "select user_id from GeneralUsers where user_id == pkey"
-  cursor = g.conn.execute(text(cmd))
+  cmd = "select user_id from GeneralUsers where user_id == :key"
+  cursor = g.conn.execute(text(cmd), key = pkey)
   name = []
   for result in cursor:
     name.append(result['user_id'])
