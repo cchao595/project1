@@ -285,7 +285,7 @@ def songs_given_playlist_id():
     pp_name = request.form['title']
     playlistinfo = []
     cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE lower(P.title) LIKE :title"
-    cursor = g.conn.execute(text(cmd), title = pp_name.lower())
+    cursor = g.conn.execute(text(cmd), title = '%' + pp_name.lower() + '%')
     row = cursor.fetchall()
     for item in row:
       ndinfo = []
