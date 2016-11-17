@@ -320,8 +320,8 @@ def songs_given_playlist_id():
 ######################################## INSERT ########################################
 ########## user ##########
 ##########################
-@app.route('/adduser', methods=['GET', 'POST'])
-def add_user(name):
+@app.route('/', methods=['GET', 'POST'])
+def add_user():
   pkey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
   cmd = "select user_id from GeneralUsers where user_id == pkey"
   cursor = g.conn.execute(text(cmd))
