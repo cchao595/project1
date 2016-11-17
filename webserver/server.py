@@ -333,7 +333,7 @@ def add_user():
     username = request.form['name1']
     birthday = request.form['date']
     email = request.form['email']
-    if (username == '' or fullname == '' or birthday == null or email == ''):
+    if (username == '' or birthday == null or email == ''):
       newinfo.append("Oops, you left one or more boxes unfilled!")
       context = dict(data = newinfo)
       return render_template("demo.html", **context)
