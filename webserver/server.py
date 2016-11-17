@@ -280,7 +280,7 @@ def gandm():
 @app.route('/', methods =['GET', 'POST'])
 def songs_given_playlist_id():
   pp_name = request.form['title']
-  return redirect('search_results', query=pp_name)
+  return redirect(url_for('search_results', query=pp_name))
 
 @app.route('/search_results/<query>')
 def playlistsearch_results(query):
