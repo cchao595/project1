@@ -342,8 +342,8 @@ def add_user():
     else:
       #newinfo.append("Welcome, " + username + "!")
       #try:
-      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:key, :user, :day, :em, TRUE, FALSE)"
-      g.conn.execute(text(cmd2), key = pkeystr, user = username, day = birthday, em = email)
+      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:key, :user, :name3, :em, TRUE, FALSE)"
+      g.conn.execute(text(cmd2), key = pkeystr, user = username, name3 = birthday, em = email)
       cmd3 = "insert into GeneralUsers values :key"
       g.conn.execute(text(cmd2), key = pkeystr)
       context = dict(data = newinfo)
