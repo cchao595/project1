@@ -284,6 +284,9 @@ def songs_given_playlist_id():
   if request.method == 'POST':
     pp_name = request.form['title']
     playlistinfo = []
+    context = dict(data = playlistinfo)
+    print('hello')
+    return render_template("search_results.html", **context)
     cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE P.title LIKE :x"
     cursor = g.conn.execute(text(cmd), title = pp_name)
     row = cursor.fetchall()
@@ -305,9 +308,9 @@ def songs_given_playlist_id():
         playlistinfo.append(str3)
       cursor2.close()
     cursor.close()
-    context = dict(data = playlistinfo)
-    print('hello')
-    return render_template("search_results.html", **context)
+    #context = dict(data = playlistinfo)
+    #print('hello')
+    #return render_template("search_results.html", **context)
   else:
     return render_template("/")
                   
