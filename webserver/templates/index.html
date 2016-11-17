@@ -42,7 +42,7 @@
 <p><a href="/gandm">Genres and Moods</a></p>
 
 <form method="POST" action="/search_results">
-<p>Search for a playlist: <input type="text" name="name"> <input type="submit" value="Search"></p>
+<p>Search for a playlist: <input type="text" name="title" value = "{{ request.form.search}}"> <input type="submit" value="Search"></p>
 </form>
 
 </body>
