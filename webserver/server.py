@@ -325,32 +325,27 @@ def songs_given_playlist_id():
 @app.route('/demo', methods=['GET', 'POST'])
 def add_user():
   if request.method == 'POST':
+    newinfo = []
     pkey = ''.join(random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') for _ in range(8))
     pkeystr = ""
     for x in pkey:
-        pkeystr += str(x)
-    cmd = "select user_id from Users where user_id == :key"
-    cursor = g.conn.execute(text(cmd), key = pkeystr)
-    name = []
-    for result in cursor:
-      name.append(result['user_id'])
-    cursor.close()
-    while pkeystr == name:
-      pkey = ''.join(random.choice(string.letters + string.digits) for _ in range(8))
-      for x in pkey:
         pkeystr += str(x)
     username = request.form['name1']
     birthday = request.form['date']
     email = request.form['email']
     if (username == '' or fullname == ''or birthday == null or email == ''):
+      newinfo.append("Oops, you left one or more boxes unfilled!")
+      context = dict(data = newinfo)
       return render_template("demo.html")
     else:
+      newinfo.append("Welcome, " + username + "!")
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), w = text(pkeystr), x = username, y = birthday, z = email)
+      cursor = g.conn.execute(text(cmd2), w = pkeystr, x = username, y = birthday, z = email)
       cursor.close()
       cmd3 = "insert into GeneralUsers values :w"
-      cursor = g.conn.execute(text(cmd2), w = text(pkeystr))
+      cursor = g.conn.execute(text(cmd2), w = pkeystr)
       cursor.close()
+      context = dict(data = newinfo)
       return render_template("demo.html")
   else:
     return render_template("demo.html")
