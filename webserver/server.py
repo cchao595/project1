@@ -345,7 +345,7 @@ def add_user():
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:key, :user, :name3, :em, TRUE, FALSE)"
       g.conn.execute(text(cmd2), key = pkeystr, user = username, name3 = birthday, em = email)
       cmd3 = "insert into GeneralUsers values (:key)"
-      g.conn.execute(text(cmd2), key = pkeystr)
+      g.conn.execute(text(cmd3), key = pkeystr)
       context = dict(data = newinfo)
       return redirect('/')
       #except:
