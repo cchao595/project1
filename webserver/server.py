@@ -324,7 +324,7 @@ def songs_given_playlist_id():
 ######################################## INSERT ########################################
 ########## user ##########
 ##########################
-@app.route('/nothing', methods=['GET', 'POST'])
+@app.route('/demo', methods=['GET', 'POST'])
 def add_user():
   if request.method == 'POST':
     newinfo = []
@@ -346,8 +346,7 @@ def add_user():
       newinfo.append("Welcome, " + username + "!")
       #try:
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:name1, :name2, :name3, :name4, TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = request.form['name1'], name3 = request.form['date'], name4 = request.form['email'])
-      cursor.close()
+      g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
       cmd3 = "insert into GeneralUsers values :key"
       cursor = g.conn.execute(text(cmd2), key = pkeystr)
       cursor.close()
@@ -361,7 +360,7 @@ def add_user():
 #############################     
 ########## library ##########
 #############################
-@app.route('/demo', methods=['GET', 'POST'])
+@app.route('/nothing', methods=['GET', 'POST'])
 def insert_library_adds():
   if request.method == 'POST':
     library_index = request.form['library_index']
@@ -374,6 +373,7 @@ def insert_library_adds():
     info = []
     info.append("success")
     context = dict(data = info)
+    
     return redirect("anotherfile.html")
     #except:
       #return redirect('/invalid_action/')
