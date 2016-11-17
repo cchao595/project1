@@ -340,15 +340,14 @@ def add_user():
       context = dict(data = newinfo)
       return render_template("demo.html", **context)
     else:
-      newinfo.append("Welcome, " + username + "!")
+      #newinfo.append("Welcome, " + username + "!")
       #try:
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:key, :name2, :name3, :em, TRUE, FALSE)"
-      g.conn.execute(text(cmd2), key = pkeystr, name2 = username, name3 = birthday, em = email)
+      g.conn.execute(text(cmd2), key = pkeystr, user = username, name3 = birthday, em = email)
       cmd3 = "insert into GeneralUsers values :key"
-      cursor = g.conn.execute(text(cmd2), key = pkeystr)
-      cursor.close()
+      g.conn.execute(text(cmd2), key = pkeystr)
       context = dict(data = newinfo)
-      return render_template("demo.html", **context)
+      return redirect('/')
       #except:
         #return redirect('/invalid_action/')
   else:
