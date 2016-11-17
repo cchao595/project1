@@ -330,7 +330,7 @@ def add_user():
     for x in pkey:
         pkeystr += str(x)
     cmd = "select user_id from Users where user_id == :key"
-    cursor = g.conn.execute(text(cmd), key = text(pkeystr))
+    cursor = g.conn.execute(text(cmd), key = pkeystr)
     name = []
     for result in cursor:
       name.append(result['user_id'])
