@@ -333,10 +333,10 @@ def add_user():
     username = request.form['name1']
     birthday = request.form['date']
     email = request.form['email']
-    if (username == '' or fullname == ''or birthday == null or email == ''):
+    if (username == '' or fullname == '' or birthday == null or email == ''):
       newinfo.append("Oops, you left one or more boxes unfilled!")
       context = dict(data = newinfo)
-      return render_template("demo.html")
+      return render_template("demo.html", **context)
     else:
       newinfo.append("Welcome, " + username + "!")
       cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values (:w, :x, :y, :z, TRUE, FALSE)"
@@ -346,7 +346,7 @@ def add_user():
       cursor = g.conn.execute(text(cmd2), w = pkeystr)
       cursor.close()
       context = dict(data = newinfo)
-      return render_template("demo.html")
+      return render_template("demo.html", **context)
   else:
     return render_template("demo.html")
 
