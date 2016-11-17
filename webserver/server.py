@@ -17,6 +17,7 @@ Read about it online.
 import os
 import random
 import string
+import datetime
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
@@ -368,8 +369,8 @@ def insert_library_adds():
     album_id = request.form['album_id']
     date_added = request.form['date_added']
     #try:
-    cmd = "INSERT INTO library_adds VALUES (DEFAULT, :l_index, :user_id, :album_id, :date_added)"
-    g.conn.execute(text(cmd), l_index = library_index, u_id = user_id, a_id = album_id, d_added = date_added)
+    cmd = "INSERT INTO library_adds (library_index, user_id, album_id, date_added) VALUES (:l_index, :user_id, :album_id, :date_added)"
+    g.conn.execute(text(cmd), l_index = library_index, u_id = user_id, a_id = album_id, d_added = datetime.datetime.today())
     info = []
     info.append("success")
     context = dict(data = info)
