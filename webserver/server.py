@@ -286,29 +286,29 @@ def songs_given_playlist_id():
     pp_name_adjust = '%' + pp_name.lower() + '%'
     print(pp_name_adjust)
     playlistinfo = []
-    cmd = "SELECT P.title, P.description FROM publicplaylists_generates AS P WHERE lower(P.title) LIKE :title"
+    cmd = "SELECT DISTINCT P.title, P.description FROM publicplaylists_generates AS P WHERE lower(P.title) LIKE :title"
     cursor = g.conn.execute(text(cmd), title = pp_name_adjust)
     row = cursor.fetchall()
-    titles = []
     for item in row:
       ndinfo = []
+      titles = []
       for x in item:
         ndinfo.append(x)
       titles.append(ndinfo[0])
       str1 = ' - '.join(str(e) for e in ndinfo)
       playlistinfo.append(str1)
-    for i in titles:
-      playlistinfo.append('Songs: Title - Artist - Length(s) - Explicit')    
-      cmd2 = "SELECT S.title, A.name, S.song_length/1000 as length, S.explicit FROM songs AS S, artists AS A, PublicPlaylists_Generates AS P, records AS R WHERE p.title = :title and P.song_id = S.song_id and P.song_id = R.song_id and A.artist_id = R.artist_id"
-      cursor2 = g.conn.execute(text(cmd2), title = i) 
-      row = cursor2.fetchall()
-      for item in row:
-        songinfo = []
-        for y in item:
-          songinfo.append(y)
-        str3 = ' - '.join(str(e) for e in songinfo)
-        playlistinfo.append(str3)
-      cursor2.close()
+      for i in titles:
+        playlistinfo.append('Songs: Title - Artist - Length(s) - Explicit')    
+        cmd2 = "SELECT S.title, A.name, S.song_length/1000 as length, S.explicit FROM songs AS S, artists AS A, PublicPlaylists_Generates AS P, records AS R WHERE p.title = :title and P.song_id = S.song_id and P.song_id = R.song_id and A.artist_id = R.artist_id"
+        cursor2 = g.conn.execute(text(cmd2), title = i) 
+        row = cursor2.fetchall()
+        for item in row:
+          songinfo = []
+          for y in item:
+            songinfo.append(y)
+          str3 = ' - '.join(str(e) for e in songinfo)
+          playlistinfo.append(str3)
+        cursor2.close()
     cursor.close()
     context = dict(data = playlistinfo)
     return render_template("search_results.html", **context)
