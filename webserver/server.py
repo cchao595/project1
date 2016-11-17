@@ -343,16 +343,35 @@ def add_user():
       print(birthday)
       print(email)
       newinfo.append("Welcome, " + username + "!")
-      cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values ((:name1), (:name2), (:name3), (:name4), TRUE, FALSE)"
-      cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
-      cursor.close()
-      cmd3 = "insert into GeneralUsers values :key"
-      cursor = g.conn.execute(text(cmd2), key = pkeystr)
-      cursor.close()
-      context = dict(data = newinfo)
-      return render_template("demo.html", **context)
+      try:
+        cmd2 = "insert into Users (user_id, username, DOB, email, isGenUser, isSuperUser) values ((:name1), (:name2), (:name3), (:name4), TRUE, FALSE)"
+        cursor = g.conn.execute(text(cmd2), name1 = pkeystr, name2 = username, name3 = birthday, name4 = email)
+        cursor.close()
+        cmd3 = "insert into GeneralUsers values :key"
+        cursor = g.conn.execute(text(cmd2), key = pkeystr)
+        cursor.close()
+        context = dict(data = newinfo)
+        return render_template("demo.html", **context)
+      except:
+        return redirect('/invalid_action/')
   else:
     return render_template("demo.html")
+
+#######################################
+########## personal playlist ##########
+#######################################
+@app.route('/insert_new_personalplaylist', methods=['POST'])
+def insert_new_personalplaylists_manages():
+  user_id = request.form['user_id']
+  title = request.form['title']
+  date_created = request.form['date_created']
+  song_id = request.form['song_id']
+  try:
+    cmd = "INSERT INTO personalplaylists_manages VALUES (DEFAULT, (:u_id), (:title_p), (:date), (:s_id))"
+    g.conn.execute(text(cmd), u_id = user_id, title_p = title, date = date_created, s_id = song_id)
+    return redirect('/')
+  except:
+    return redirect('/invalid_action/')
 
                   
 ######################################## EXAMPLES ########################################
